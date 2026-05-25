@@ -1,0 +1,3059 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RadTech Academy - Manual de Posicionamiento y Factores Radiológicos</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .font-mono-tech {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased">
+
+  <!-- Header de la Aplicación -->
+  <header
+    class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 px-4 py-3 shadow-lg backdrop-blur-md bg-opacity-95">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-yellow-500 text-slate-950 p-2 rounded-xl shadow-md shadow-yellow-500/20 animate-pulse">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+          </svg>
+        </div>
+        <div>
+          <h1
+            class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-400 to-amber-200 bg-clip-text text-transparent">
+            RADTECH ACADEMY
+          </h1>
+          <p class="text-xs text-slate-400 font-medium">Guía de Posicionamiento y Técnica Radiográfica</p>
+        </div>
+      </div>
+
+      <!-- Navegación de Pestañas Principales -->
+      <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
+        <button onclick="switchTab('guide')" id="tab-btn-guide"
+          class="px-4 py-2 text-xs md:text-sm font-semibold rounded-lg bg-yellow-500 text-slate-950 transition-all duration-300 shadow-md">
+          📖 Guía de Protocolos
+        </button>
+        <button onclick="switchTab('simulator')" id="tab-btn-simulator"
+          class="px-4 py-2 text-xs md:text-sm font-semibold rounded-lg text-slate-400 hover:text-slate-200 transition-all duration-300">
+          ⚡ Consola Virtual X-Ray
+        </button>
+        <button onclick="switchTab('quiz')" id="tab-btn-quiz"
+          class="px-4 py-2 text-xs md:text-sm font-semibold rounded-lg text-slate-400 hover:text-slate-200 transition-all duration-300">
+          🧠 Quiz Evaluativo
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- PESTAÑA 1: GUÍA DE PROTOCOLOS -->
+    <section id="section-guide" class="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Barra Lateral de Regiones Anatómicas (3 Columnas) -->
+      <div
+        class="lg:col-span-3 flex flex-col gap-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-800 h-[calc(100vh-140px)] overflow-y-auto">
+        <div class="relative">
+          <input type="text" id="search-input" oninput="filterRegions()" placeholder="Buscar región anatómica..."
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all">
+          <span class="absolute right-3 top-2.5 text-slate-500">🔍</span>
+        </div>
+
+        <div class="border-t border-slate-800/80 my-1"></div>
+
+        <!-- Lista de Regiones Agrupadas -->
+        <div class="flex-1 space-y-4" id="regions-list">
+          <!-- Categoría: Tórax y Abdomen -->
+          <div>
+            <h3
+              class="text-xs font-bold text-yellow-500/80 tracking-wider uppercase mb-2 border-b border-slate-800 pb-1">
+              Tórax y Abdomen</h3>
+            <div class="space-y-1" id="cat-torax-abdomen"></div>
+          </div>
+          <!-- Categoría: Miembro Superior -->
+          <div>
+            <h3 class="text-xs font-bold text-blue-400/80 tracking-wider uppercase mb-2 border-b border-slate-800 pb-1">
+              Miembro Superior</h3>
+            <div class="space-y-1" id="cat-superior"></div>
+          </div>
+          <!-- Categoría: Miembro Inferior -->
+          <div>
+            <h3
+              class="text-xs font-bold text-emerald-400/80 tracking-wider uppercase mb-2 border-b border-slate-800 pb-1">
+              Miembro Inferior</h3>
+            <div class="space-y-1" id="cat-inferior"></div>
+          </div>
+          <!-- Categoría: Esqueleto Axial -->
+          <div>
+            <h3
+              class="text-xs font-bold text-purple-400/80 tracking-wider uppercase mb-2 border-b border-slate-800 pb-1">
+              Esqueleto Axial</h3>
+            <div class="space-y-1" id="cat-axial"></div>
+          </div>
+          <!-- Categoría: Cráneo y Cara -->
+          <div>
+            <h3 class="text-xs font-bold text-pink-400/80 tracking-wider uppercase mb-2 border-b border-slate-800 pb-1">
+              Cráneo y Cara</h3>
+            <div class="space-y-1" id="cat-craneo"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel de Contenido de Protocolo (9 Columnas) -->
+      <div class="lg:col-span-9 flex flex-col gap-6">
+
+        <!-- Encabezado de Región Seleccionada -->
+        <div
+          class="bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-800 p-6 rounded-2xl relative overflow-hidden shadow-md">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <span class="text-xs font-bold text-yellow-500 tracking-wider uppercase"
+                id="current-category">CATEGORÍA</span>
+              <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-1" id="current-region-name">Región Anatómica
+              </h2>
+            </div>
+            <!-- Selector de Proyección / Incidencia -->
+            <div class="flex flex-wrap gap-2" id="projections-container">
+              <!-- Se generan dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Selector Apartado Adulto / Pediátrico -->
+        <div class="grid grid-cols-2 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800 shadow-inner">
+          <button onclick="toggleAgeGroup('adult')" id="btn-group-adult"
+            class="py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all bg-yellow-500 text-slate-950 shadow-md">
+            <span>🧑 Paciente Adulto</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-950/20 text-slate-950 font-extrabold"
+              id="adult-badge">18+ años</span>
+          </button>
+          <button onclick="toggleAgeGroup('pediatric')" id="btn-group-pediatric"
+            class="py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-slate-200">
+            <span>👶 Paciente Pediátrico</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-extrabold"
+              id="ped-badge">0-15 años</span>
+          </button>
+        </div>
+
+        <!-- Tarjetas Detalladas del Protocolo -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- Columna Izquierda: Factores Técnicos de Exposición -->
+          <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+            <div class="flex items-center gap-2 pb-3 border-b border-slate-800/80">
+              <span class="text-xl">⚡</span>
+              <h3 class="text-lg font-bold text-white">Factores de Exposición Técnicos</h3>
+            </div>
+
+            <!-- Grid de factores -->
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80">
+                <span class="text-xs text-slate-400 font-medium">Tensión Recomendada</span>
+                <p class="text-xl font-extrabold text-yellow-400 font-mono-tech mt-1" id="info-kv">-</p>
+              </div>
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80">
+                <span class="text-xs text-slate-400 font-medium">Carga Eléctrica (mAs)</span>
+                <p class="text-xl font-extrabold text-yellow-400 font-mono-tech mt-1" id="info-mas">-</p>
+              </div>
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80">
+                <span class="text-xs text-slate-400 font-medium">Uso de Bucky/Rejilla</span>
+                <p class="text-sm font-bold text-slate-200 mt-1" id="info-grid">-</p>
+              </div>
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80">
+                <span class="text-xs text-slate-400 font-medium">Distancia Foco-Receptor (DFI)</span>
+                <p class="text-sm font-bold text-slate-200 mt-1" id="info-dfi">-</p>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 flex flex-col gap-1">
+              <span class="text-xs text-slate-400 font-medium">Chasis Recomendado</span>
+              <p class="text-sm font-bold text-slate-200" id="info-chassis">-</p>
+            </div>
+
+            <!-- Nota Especial de Protección Alara / Pediátrica -->
+            <div class="bg-sky-950/30 border border-sky-800/50 p-4 rounded-xl text-xs text-sky-200 flex gap-3"
+              id="special-warning-box">
+              <span class="text-lg">💡</span>
+              <div>
+                <strong class="block font-semibold mb-0.5" id="warning-title">Sugerencia ALARA</strong>
+                <span id="warning-text">Siempre colimar al área de interés clínico exacto para evitar radiación dispersa
+                  innecesaria.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Posicionamiento Radiográfico -->
+          <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+            <div class="flex items-center gap-2 pb-3 border-b border-slate-800/80">
+              <span class="text-xl">🧍</span>
+              <h3 class="text-lg font-bold text-white">Posicionamiento Anatómico</h3>
+            </div>
+
+            <div class="space-y-4">
+              <div class="flex flex-col gap-1">
+                <span class="text-xs font-bold text-yellow-500/80 tracking-wider uppercase">Posición del Paciente</span>
+                <p class="text-sm text-slate-300 leading-relaxed" id="pos-patient">-</p>
+              </div>
+              <div class="flex flex-col gap-1">
+                <span class="text-xs font-bold text-blue-400 tracking-wider uppercase">Posición de la Estructura
+                  (Región)</span>
+                <p class="text-sm text-slate-300 leading-relaxed" id="pos-part">-</p>
+              </div>
+              <div class="flex flex-col gap-1">
+                <span class="text-xs font-bold text-emerald-400 tracking-wider uppercase">Dirección del Rayo Central
+                  (RC)</span>
+                <p class="text-sm text-slate-300 leading-relaxed" id="pos-cr">-</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Fila Inferior: Criterios de Evaluación y Calidad de Imagen -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🔍</span>
+              <h3 class="text-lg font-bold text-white">Criterios de Evaluación y Calidad Radiográfica</h3>
+            </div>
+            <span class="text-xs bg-slate-800 text-slate-400 px-3 py-1 rounded-full font-medium">Chequeo de
+              Calidad</span>
+          </div>
+
+          <!-- Lista Interactiva de Criterios -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="criteria-checklist">
+            <!-- Generados dinámicamente -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PESTAÑA 2: CONSOLA VIRTUAL DE RAYOS X (SIMULADOR DE EXPOSICIÓN) -->
+    <section id="section-simulator" class="lg:col-span-12 hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Consola de Control de Rayos X (7 Columnas) -->
+      <div
+        class="lg:col-span-7 bg-slate-900 border-2 border-slate-700 rounded-3xl p-6 flex flex-col gap-6 shadow-2xl relative">
+        <!-- Efecto de luces led e indicación técnica -->
+        <div
+          class="absolute top-4 right-6 flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-full border border-slate-800">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest font-mono-tech">Ready /
+            Listo</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-yellow-500 font-bold text-lg">⚡</span>
+          <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest">Generador de Alta Tensión Radiográfica
+          </h3>
+        </div>
+
+        <!-- Panel de Pantalla Digital Superior -->
+        <div class="bg-slate-950 rounded-2xl p-6 border-2 border-slate-800 grid grid-cols-3 gap-4 shadow-inner">
+          <div class="text-center">
+            <span class="text-[10px] font-bold text-slate-500 uppercase font-mono-tech">Tensión (kV)</span>
+            <div class="text-3xl md:text-4xl font-extrabold text-cyan-400 font-mono-tech mt-1" id="sim-display-kv">75
+            </div>
+          </div>
+          <div class="text-center border-x border-slate-800">
+            <span class="text-[10px] font-bold text-slate-500 uppercase font-mono-tech">Carga (mAs)</span>
+            <div class="text-3xl md:text-4xl font-extrabold text-cyan-400 font-mono-tech mt-1" id="sim-display-mas">10.0
+            </div>
+          </div>
+          <div class="text-center">
+            <span class="text-[10px] font-bold text-slate-500 uppercase font-mono-tech">Tiempo de Exp. (s)</span>
+            <div class="text-3xl md:text-4xl font-extrabold text-emerald-400 font-mono-tech mt-1" id="sim-display-time">
+              0.05</div>
+          </div>
+        </div>
+
+        <!-- Botoneras de Control -->
+        <div class="grid grid-cols-2 gap-6">
+
+          <!-- Control kV -->
+          <div
+            class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col items-center justify-between gap-3">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ajuste kV</span>
+            <div class="flex items-center gap-4">
+              <button onclick="adjustSimFactor('kv', -1)"
+                class="h-10 w-10 rounded-full bg-slate-800 hover:bg-slate-700 font-bold text-white text-lg flex items-center justify-center">-1</button>
+              <button onclick="adjustSimFactor('kv', -5)"
+                class="h-10 w-10 rounded-full bg-slate-800 hover:bg-slate-700 font-bold text-white text-xs flex items-center justify-center">-5</button>
+              <button onclick="adjustSimFactor('kv', 5)"
+                class="h-10 w-10 rounded-full bg-slate-800 hover:bg-slate-700 font-bold text-white text-xs flex items-center justify-center">+5</button>
+              <button onclick="adjustSimFactor('kv', 1)"
+                class="h-10 w-10 rounded-full bg-slate-800 hover:bg-slate-700 font-bold text-white text-lg flex items-center justify-center">+1</button>
+            </div>
+          </div>
+
+          <!-- Control mAs -->
+          <div
+            class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col items-center justify-between gap-3">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ajuste mAs</span>
+            <div class="flex items-center gap-4">
+              <button onclick="adjustSimFactor('mas', -1)"
+                class="h-10 w-10 rounded-full bg-slate-800 hover:bg-slate-700 font-bold text-white text-sm flex items-center justify-center">-1</button>
+              <button onclick="adjustSimFactor('mas', -5)"
+                class="h-10 w-10 rounded-full bg-slate-800 hover:bg-slate-700 font-bold text-white text-xs flex items-center justify-center">-5</button>
+              <button onclick="adjustSimFactor('mas', 5)"
+                class="h-10 w-10 rounded-full bg-slate-800 hover:bg-slate-700 font-bold text-white text-xs flex items-center justify-center">+5</button>
+              <button onclick="adjustSimFactor('mas', 1)"
+                class="h-10 w-10 rounded-full bg-slate-800 hover:bg-slate-700 font-bold text-white text-sm flex items-center justify-center">+1</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Opciones del Generador: Bucky, Foco y Edad del Paciente -->
+        <div class="grid grid-cols-3 gap-4">
+
+          <!-- Selector de Bucky/Mesa/Estativo -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Filtro / Bucky</span>
+            <button id="sim-btn-grid" onclick="toggleSimGrid()"
+              class="w-full py-2 px-3 rounded-lg bg-slate-800 text-slate-300 font-bold text-xs transition-all">
+              CON REJILLA (Grid)
+            </button>
+          </div>
+
+          <!-- Selector de Foco -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Foco Catódico</span>
+            <button id="sim-btn-focus" onclick="toggleSimFocus()"
+              class="w-full py-2 px-3 rounded-lg bg-slate-800 text-slate-300 font-bold text-xs transition-all">
+              FOCO GRUESO (0.6)
+            </button>
+          </div>
+
+          <!-- Selector Edad Simulador -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Edad del Paciente</span>
+            <button id="sim-btn-age" onclick="toggleSimAge()"
+              class="w-full py-2 px-3 rounded-lg bg-slate-800 text-slate-300 font-bold text-xs transition-all">
+              ADULTO 🧑
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Gran Panel de Disparo -->
+        <div
+          class="mt-4 flex flex-col md:flex-row items-center gap-6 bg-slate-950 p-5 rounded-2xl border border-slate-800 justify-between">
+          <div>
+            <h4 class="text-sm font-bold text-white">Objetivo Radiográfico actual:</h4>
+            <p class="text-xs text-slate-400 mt-1" id="sim-target-text">Tórax AP/PA en Paciente Adulto</p>
+          </div>
+
+          <!-- Botón de Preparación y Disparo -->
+          <div class="flex items-center gap-3">
+            <button onclick="simTriggerPrep()" id="sim-btn-prep"
+              class="py-3 px-5 rounded-xl font-extrabold text-xs tracking-wider uppercase transition-all duration-300 bg-slate-800 text-slate-300 hover:bg-slate-700">
+              Prep (Ánodo)
+            </button>
+            <button onclick="simTriggerExposure()" id="sim-btn-expose"
+              class="py-3.5 px-7 rounded-xl font-extrabold text-sm tracking-wider uppercase transition-all duration-300 bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/20 active:scale-95">
+              💥 EXPOSICIÓN
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Monitor del Chasis Radiológico / Resultado de la Simulación (5 Columnas) -->
+      <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col gap-6 shadow-lg">
+        <div class="flex items-center gap-2 pb-3 border-b border-slate-800/80">
+          <span class="text-xl">📺</span>
+          <h3 class="text-lg font-bold text-white">Monitor de Adquisición Digital DR</h3>
+        </div>
+
+        <!-- Chasis / Monitor de visualización de la imagen -->
+        <div id="sim-screen"
+          class="aspect-[4/5] bg-black border-4 border-slate-950 rounded-2xl flex flex-col items-center justify-center p-4 relative overflow-hidden transition-all duration-500 shadow-inner">
+          <!-- Símbolo de radiación de fondo -->
+          <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none" id="sim-bg-icon">
+            <svg class="w-48 h-48 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4M12,18A2,2 0 0,1 10,16A2,2 0 0,1 12,14A2,2 0 0,1 14,16A2,2 0 0,1 12,18M17,12A2,2 0 0,1 15,10A2,2 0 0,1 17,8A2,2 0 0,1 19,10A2,2 0 0,1 17,12M7,12A2,2 0 0,1 5,10A2,2 0 0,1 7,8A2,2 0 0,1 9,10A2,2 0 0,1 7,12Z" />
+            </svg>
+          </div>
+
+          <!-- Mensajes o representación del hueso -->
+          <div class="z-10 text-center flex flex-col items-center gap-4" id="sim-screen-content">
+            <span class="text-3xl">🦴</span>
+            <p class="text-xs text-slate-400 max-w-xs leading-relaxed">Selecciona los factores óptimos según el manual y
+              presiona EXPOSICIÓN para evaluar la calidad del haz.</p>
+          </div>
+
+          <!-- Indicador flotante del Índice de Exposición (EI) -->
+          <div
+            class="absolute bottom-4 left-4 bg-slate-950/90 border border-slate-800 px-3 py-1.5 rounded-lg text-[10px] font-bold text-slate-400 font-mono-tech hidden"
+            id="sim-ei-box">
+            EI: <span id="sim-ei-value" class="text-white">--</span> (Índice de Exposición)
+          </div>
+        </div>
+
+        <!-- Retroalimentación de la Adquisición -->
+        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col gap-2">
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Reporte Dosimétrico e
+            Imagenológico:</span>
+          <div id="sim-report-status" class="text-sm font-bold text-slate-300">
+            Esperando disparo de exposición...
+          </div>
+          <p id="sim-report-details" class="text-xs text-slate-500 leading-relaxed">
+            El índice de exposición ideal (EI) depende del correcto equilibrio de kV (poder de penetración) y mAs
+            (densidad del haz de fotones) para evitar ruido por inanición de fotones o sobreexposición/saturación.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PESTAÑA 3: QUIZ DE AUTOEVALUACIÓN -->
+    <section id="section-quiz" class="lg:col-span-12 hidden max-w-3xl mx-auto w-full flex flex-col gap-6">
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col gap-6">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+          <div>
+            <h3 class="text-xl font-bold text-white">Prueba de Autoevaluación</h3>
+            <p class="text-xs text-slate-400 mt-1">Evalúa tus conocimientos en anatomía radiológica, factores técnicos y
+              posicionamiento clínico.</p>
+          </div>
+          <span class="text-xs bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full font-bold"
+            id="quiz-progress-text">Pregunta 1 de 5</span>
+        </div>
+
+        <!-- Barra de progreso visual -->
+        <div class="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden">
+          <div id="quiz-progress-bar" class="h-full bg-yellow-500 transition-all duration-300" style="width: 20%;">
+          </div>
+        </div>
+
+        <!-- Pregunta -->
+        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800/80">
+          <p class="text-base font-semibold text-slate-200 leading-relaxed" id="quiz-question">Cargando...</p>
+        </div>
+
+        <!-- Opciones -->
+        <div class="flex flex-col gap-3" id="quiz-options-container">
+          <!-- Opciones generadas por JS -->
+        </div>
+
+        <!-- Banner de advertencia (Reemplaza alert) -->
+        <div id="quiz-warning"
+          class="hidden text-sm text-rose-400 font-bold animate-pulse text-center bg-rose-950/20 border border-rose-800/40 p-3 rounded-xl">
+          ⚠️ ¡Por favor selecciona una opción antes de continuar!
+        </div>
+
+        <!-- Botón siguiente y retroalimentación -->
+        <div class="hidden bg-slate-950 p-4 rounded-2xl border border-slate-800/80 flex flex-col gap-2"
+          id="quiz-feedback-box">
+          <span class="text-xs font-bold uppercase tracking-wider" id="quiz-feedback-title">Correcto</span>
+          <p class="text-xs text-slate-300 leading-relaxed" id="quiz-feedback-text">Explicación técnica detallada.</p>
+        </div>
+
+        <div class="flex justify-end">
+          <button onclick="nextQuizQuestion()" id="quiz-btn-action"
+            class="py-3 px-6 rounded-xl font-bold text-sm bg-yellow-500 text-slate-950 hover:bg-yellow-400 transition-all shadow-md">
+            Siguiente pregunta ➡️
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 border-t border-slate-900 py-6 px-4 text-center text-xs text-slate-600">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <p>© 2026 RadTech Academy. Creado con fines pedagógicos para Tecnólogos Médicos en Imagenología.</p>
+      <p class="text-[10px] bg-slate-900 px-3 py-1 rounded-full text-slate-500 border border-slate-800">Cumple
+        principios ALARA y estándares de calidad chilenos/internacionales</p>
+    </div>
+  </footer>
+
+  <!-- BASE DE DATOS DE PROTOCOLOS RADIOGRÁFICOS -->
+  <script>
+    const PROTOCOL_DATA = {
+      torax: {
+        name: "Tórax",
+        category: "torax_abdomen",
+        views: [
+          {
+            name: "PA / AP",
+            adult: {
+              kv: "110 - 125 kV", mas: "4 - 8 mAs", grid: "SÍ (Con antidifusor móvil o fijo)", dfi: "180 cm", chassis: "35x43 cm (Vertical/Apaisado)",
+              positioning: {
+                patient: "Bipedestación, apoyando la cara anterior del tórax contra el estativo de pared. Peso distribuido equitativamente.",
+                part: "Hombros rotados hacia delante contra el receptor para desplazar escápulas. Manos en la parte posterior de las caderas, codos empujados adelante.",
+                cr: "Rayo horizontal perpendicular centrado al nivel de T7 (borde inferior escapular) y plano sagital medio."
+              },
+              criteria: [
+                "Visualización completa de ambos campos pulmonares, de vértices a ángulos costofrénicos.",
+                "Escápulas proyectadas por fuera de ambos campos pulmonares.",
+                "Clavículas simétricas equidistantes a la columna vertebral.",
+                "Visualización difusa de cuerpos vertebrales torácicos superiores tras la silueta cardíaca.",
+                "Inspiración completa profunda (mínimo 10 arcos costales posteriores sobre diafragma)."
+              ]
+            },
+            pediatric: {
+              kv: "70 - 85 kV", mas: "1.2 - 2.5 mAs", grid: "NO", dfi: "100 - 120 cm", chassis: "24x30 cm o según tamaño",
+              positioning: {
+                patient: "Sedestación o bipedestación si es posible (con inmovilizadores tipo Pigg-O-Stat). Lactantes en decúbito supino.",
+                part: "Brazos elevados junto a la cabeza para despejar el campo pulmonar. Cabeza alineada en plano sagital medio.",
+                cr: "Perpendicular, dirigido a nivel de la línea mamilar (T5-T6) y plano sagital medio."
+              },
+              criteria: [
+                "Inclusión de toda la caja torácica (vértebras a base de pulmón).",
+                "Simetría de ambos hemitórax, costillas equidistantes.",
+                "Inspiración aceptable (8-9 costillas visibles debido a patrón respiratorio pediátrico rápido).",
+                "Uso estricto de protección de gónadas."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "120 - 130 kV", mas: "8 - 15 mAs", grid: "SÍ (Con antidifusor)", dfi: "180 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación, apoyando el costado izquierdo contra el estativo de pared (disminuye magnificación cardíaca).",
+                part: "Brazos elevados sobre la cabeza, cruzados, con barbilla levantada. Plano sagital paralelo al receptor.",
+                cr: "Horizontal, perpendicular, centrado en el plano coronal medio a nivel de T7."
+              },
+              criteria: [
+                "Superposición casi perfecta de los arcos costales posteriores.",
+                "Esternón perfilado nítidamente en posición lateral.",
+                "Ángulos costofrénicos y bases pulmonares totalmente incluidos.",
+                "Hilio pulmonar centrado en la radiografía sin rotaciones severas."
+              ]
+            },
+            pediatric: {
+              kv: "75 - 90 kV", mas: "2.5 - 5 mAs", grid: "NO", dfi: "100 - 120 cm", chassis: "24x30 cm o según tamaño",
+              positioning: {
+                patient: "Lactantes en decúbito lateral con soportes de arena. Niños mayores parados o sentados de perfil.",
+                part: "Brazos extendidos verticalmente y sujetos con firmeza para evitar movimiento.",
+                cr: "Perpendicular, centrado en plano coronal medio a nivel mamilar."
+              },
+              criteria: [
+                "Perfil de silueta pulmonar y cardíaca sin artefactos por movimiento.",
+                "Brazos completamente fuera del campo de visualización pulmonar."
+              ]
+            }
+          }
+        ]
+      },
+      abdomen: {
+        name: "Abdomen",
+        category: "torax_abdomen",
+        views: [
+          {
+            name: "AP Bipedestación",
+            adult: {
+              kv: "75 - 85 kV", mas: "25 - 40 mAs", grid: "SÍ (Bucky mural)", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación, apoyando la espalda de manera uniforme contra el estativo vertical.",
+                part: "Alineación del plano sagital medio al receptor. Los brazos deben quedar relajados al lado del cuerpo.",
+                cr: "Horizontal y perpendicular, dirigido a la línea media del abdomen a nivel de 5 cm por encima de las crestas ilíacas (L3-L4) para asegurar la inclusión de las cúpulas diafragmáticas."
+              },
+              criteria: [
+                "Cúpulas diafragmáticas completamente visibles para evaluar neumoperitoneo (aire libre).",
+                "Niveles hidroaéreos y patrones de gas intestinal claramente definidos.",
+                "Simetría bilateral, con alas ilíacas y agujeros obturadores simétricos.",
+                "Borde inferior debe incluir la región de la sínfisis del pubis de ser clínicamente posible."
+              ]
+            },
+            pediatric: {
+              kv: "60 - 70 kV", mas: "6 - 12 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm o 30x35 cm",
+              positioning: {
+                patient: "Bipedestación asistida o sedestación vertical segura si no deambula.",
+                part: "Brazos elevados, pelvis inmovilizada sin rotaciones mediante asistencia protegida.",
+                cr: "Horizontal, perpendicular, dirigido a 2 cm sobre el ombligo."
+              },
+              criteria: [
+                "Diafragma y pelvis completamente incluidos sin borrosidad cinética.",
+                "Adecuado contraste para diferenciar distensión gaseosa de niveles patológicos."
+              ]
+            }
+          }
+        ]
+      },
+      parrilla_costal: {
+        name: "Parrilla Costal",
+        category: "torax_abdomen",
+        views: [
+          {
+            name: "AP / PA Costal",
+            adult: {
+              kv: "65 - 75 kV", mas: "12 - 20 mAs", grid: "SÍ (Bucky)", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación de espaldas (AP para costillas posteriores) o de frente (PA para costillas anteriores) al receptor.",
+                part: "Hombros descendidos y rotados hacia delante para apartar las escápulas del campo pulmonar.",
+                cr: "Perpendicular, dirigido a nivel de T7 (centro del hemitórax de interés)."
+              },
+              criteria: [
+                "Costillas por encima y por debajo del diafragma claramente visibles según área lesionada.",
+                "Detalle cortical nítido para descarte de trazos de fractura."
+              ]
+            },
+            pediatric: {
+              kv: "55 - 65 kV", mas: "3 - 6 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito supino en mesa, con adecuada inmovilización.",
+                part: "Simetría del tórax, brazos extendidos arriba de la cabeza.",
+                cr: "Perpendicular, dirigido al hemitórax afectado."
+              },
+              criteria: [
+                "Ausencia total de movimiento en la fase de apnea espiratoria asistida."
+              ]
+            }
+          },
+          {
+            name: "Oblicua Costal",
+            adult: {
+              kv: "70 - 80 kV", mas: "15 - 25 mAs", grid: "SÍ (Bucky)", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación, rotando el cuerpo del paciente en oblicua posterior o anterior (45°) para elongar las costillas de interés.",
+                part: "En oblicua posterior (LPO/RPO), el lado afectado queda más cercano a la placa. Brazo de interés elevado.",
+                cr: "Perpendicular centrado en la línea axilar media del lado afectado."
+              },
+              criteria: [
+                "Costillas axilares del lado de interés elongadas y libres de superposición.",
+                "Estructura ósea costal bien contrastada sobre el fondo pulmonar."
+              ]
+            },
+            pediatric: {
+              kv: "58 - 66 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito supino oblicuado a 45° mediante cuñas de espuma blanda.",
+                part: "Extremidad superior afectada elevada y sujeta con suavidad.",
+                cr: "Perpendicular a la zona costal media afectada."
+              },
+              criteria: [
+                "Inmovilidad absoluta. Costillas sin rotación excesiva o artefactos."
+              ]
+            }
+          }
+        ]
+      },
+      hombro: {
+        name: "Hombro",
+        category: "superior",
+        views: [
+          {
+            name: "AP (Anteroposterior)",
+            adult: {
+              kv: "70 - 75 kV", mas: "8 - 12 mAs", grid: "SÍ (Bucky)", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación o decúbito supino, apoyando la parte posterior del hombro afectado contra el receptor.",
+                part: "Brazo al costado en posición neutra. Rotar ligeramente el cuerpo 35° a 45° hacia el lado afectado.",
+                cr: "Perpendicular, centrado 2.5 cm inferior a la apófisis coracoides."
+              },
+              criteria: [
+                "Visualización nítida de la relación entre la cabeza humeral y la cavidad glenoidea.",
+                "Espacio articular escapulohumeral visible y libre de superposiciones severas."
+              ]
+            },
+            pediatric: {
+              kv: "55 - 62 kV", mas: "2 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito supino sobre el chasis directo.",
+                part: "Brazo extendido al costado del cuerpo en posición neutra, estabilizado.",
+                cr: "Perpendicular, dirigido a la articulación escapulohumeral."
+              },
+              criteria: [
+                "Espacio glenohumeral visible y núcleos de crecimiento humerales proximales alineados."
+              ]
+            }
+          },
+          {
+            name: "Axial (Axilar)",
+            adult: {
+              kv: "65 - 75 kV", mas: "6 - 10 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Apaisado)",
+              positioning: {
+                patient: "Sentado en el extremo de la mesa con el brazo abducido en 90° sobre el chasis.",
+                part: "El paciente inclina lateralmente el tronco sobre el chasis para aproximar el hombro.",
+                cr: "Angulado de 15° a 30° medialmente a través de la articulación axilar hacia el receptor."
+              },
+              criteria: [
+                "Cabeza del húmero libre de superposiciones de la clavícula y el acromion.",
+                "Clave para confirmar luxaciones anteriores o posteriores."
+              ]
+            },
+            pediatric: {
+              kv: "52 - 60 kV", mas: "1.5 - 3 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito supino en camilla, cabeza rotada al lado contrario.",
+                part: "Brazo abducido suavemente lo máximo posible. El chasis se mantiene de canto en el margen superior.",
+                cr: "Horizontal a través del hueco axilar dirigido hacia el chasis superior."
+              },
+              criteria: [
+                "Articulación glenohumeral despejada sin superposición de clavícula y acromion."
+              ]
+            }
+          },
+          {
+            name: "Y de Escápula (Lateral)",
+            adult: {
+              kv: "75 - 85 kV", mas: "15 - 25 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación frente al receptor, rotando el cuerpo en oblicua anterior de 45° a 60°.",
+                part: "Colocar la cara anterior del hombro afectado contra la placa. Bordes medial y lateral de la escápula alineados perpendiculares al chasis.",
+                cr: "Perpendicular, centrado en la articulación escapulohumeral."
+              },
+              criteria: [
+                "Cuerpo escapular de perfil absoluto, libre de superposición costal.",
+                "Acromion y apófisis coracoides de la escápula delineando los brazos superiores de la letra 'Y'."
+              ]
+            },
+            pediatric: {
+              kv: "62 - 70 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito oblicuo asistido mediante cuñas de espuma.",
+                part: "Rotar suavemente el hombro afectado hacia adelante.",
+                cr: "Perpendicular, centrado en el centro de la escápula rotada."
+              },
+              criteria: [
+                "Escápula de perfil lateral aceptable para descarte de luxaciones traumáticas."
+              ]
+            }
+          },
+          {
+            name: "Zanca",
+            adult: {
+              kv: "60 - 68 kV", mas: "6 - 10 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Apaisado)",
+              positioning: {
+                patient: "Bipedestación, apoyando la espalda de manera uniforme contra el receptor.",
+                part: "Alinear y centrar la articulación acromioclavicular afectada al centro del chasis.",
+                cr: "Angulado 10° a 15° en dirección cefálica, dirigido directamente a la articulación acromioclavicular."
+              },
+              criteria: [
+                "Visualización nítida y despejada del espacio articular acromioclavicular sin superposiciones.",
+                "Clavícula distal proyectada por encima del acromion y la espina escapular."
+              ]
+            },
+            pediatric: {
+              kv: "50 - 58 kV", mas: "1.5 - 3 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito supino en mesa, con hombros simétricos.",
+                part: "Mantener los hombros simétricos y pegados a la mesa.",
+                cr: "Angulado 10° cefálico, dirigido al acromion afectado."
+              },
+              criteria: [
+                "Detalle fino de la clavícula distal pediátrica para evaluar fracturas en tallo verde."
+              ]
+            }
+          }
+        ]
+      },
+      humero: {
+        name: "Húmero",
+        category: "superior",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "65 - 75 kV", mas: "6 - 10 mAs", grid: "SÍ (Opcional)", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación, apoyando la espalda contra el estativo vertical.",
+                part: "Húmero centrado, mano supinada para colocar epicóndilo y epitróclea paralelos al receptor.",
+                cr: "Perpendicular, dirigido a la diáfisis media humeral."
+              },
+              criteria: [
+                "Articulaciones de hombro y codo visibles.",
+                "Epicóndilos del húmero alineados simétricamente sin rotación."
+              ]
+            },
+            pediatric: {
+              kv: "52 - 60 kV", mas: "2 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito supino en mesa.",
+                part: "Extremidad fijada con suavidad, mano supinada.",
+                cr: "Perpendicular, centrado al eje largo del húmero."
+              },
+              criteria: [
+                "Húmero alineado, sin rotación detectable de articulaciones extremas."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "68 - 78 kV", mas: "8 - 12 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm",
+              positioning: {
+                patient: "Bipedestación, de cara o espaldas al estativo rotado.",
+                part: "Brazo flexionado a 90° con la mano apoyada en la cintura (epicóndilos perpendiculares al receptor).",
+                cr: "Perpendicular, dirigido a la diáfisis media humeral."
+              },
+              criteria: [
+                "Húmero de perfil con epicóndilos superpuestos.",
+                "Estructura ósea visible en todo su contorno cortical."
+              ]
+            },
+            pediatric: {
+              kv: "55 - 62 kV", mas: "2.5 - 5 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito supino, rotación interna del brazo afectada.",
+                part: "Mano pronada sobre abdomen, estabilizada por el operador.",
+                cr: "Perpendicular a la mitad del húmero."
+              },
+              criteria: [
+                "Perfil nítido de la región distal y proximal del húmero infantil."
+              ]
+            }
+          }
+        ]
+      },
+      codo: {
+        name: "Codo",
+        category: "superior",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "55 - 65 kV", mas: "3.2 - 5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Sentado al extremo de la mesa con el brazo completamente extendido en el mismo plano.",
+                part: "Supinar la mano para alinear epicóndilo y epitróclea paralelos al chasis.",
+                cr: "Perpendicular, dirigido al punto medio de la articulación del codo."
+              },
+              criteria: [
+                "Articulación del codo abierta con el olécrano metido en su fosa.",
+                "Epicóndilos humerales simétricos.",
+                "Superposición moderada de la cabeza del radio sobre el cúbito."
+              ]
+            },
+            pediatric: {
+              kv: "50 - 58 kV", mas: "1.5 - 2.5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado o en el regazo de los padres.",
+                part: "Mano supinada por un acompañante protegido con delantal plomado.",
+                cr: "Perpendicular, dirigido a la articulación del codo."
+              },
+              criteria: [
+                "Separación clara de los centros cartilaginosos de crecimiento del codo (cóndilo y tróclea)."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "55 - 65 kV", mas: "4 - 6 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado, con el codo flexionado en 90° exactos.",
+                part: "Colocar la mano en perfil estricto (pulgar hacia arriba). Epicóndilos paralelos al haz.",
+                cr: "Perpendicular, dirigido al punto medio lateral del codo."
+              },
+              criteria: [
+                "Superposición del epicóndilo y epitróclea humeral.",
+                "Cabeza del radio superponiendo parcialmente la apófisis coronoides.",
+                "Olécrano visualizado en perfil estricto."
+              ]
+            },
+            pediatric: {
+              kv: "50 - 58 kV", mas: "1.8 - 3 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado o apoyado. Codo flexionado a 90°.",
+                part: "Sujetar muñeca y húmero proximal para inmovilización total.",
+                cr: "Perpendicular, centrado en la articulación lateral."
+              },
+              criteria: [
+                "Articulación de perfil estricto para evaluar el alineamiento de la línea humeral anterior."
+              ]
+            }
+          }
+        ]
+      },
+      mano: {
+        name: "Mano",
+        category: "superior",
+        views: [
+          {
+            name: "AP / PA",
+            adult: {
+              kv: "50 - 55 kV", mas: "2.5 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Sentado, mano en contacto estrecho con el receptor.",
+                part: "Palma plana, dedos extendidos y ligeramente separados.",
+                cr: "Perpendicular, dirigido a la tercera articulación metacarpofalángica."
+              },
+              criteria: [
+                "Falanges y metacarpianos sin rotaciones. Articulaciones interfalángicas abiertas.",
+                "Visualización completa del carpo y radio-cúbito distal."
+              ]
+            },
+            pediatric: {
+              kv: "44 - 50 kV", mas: "1.2 - 2 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Lactantes o niños pequeños apoyados en mesa.",
+                part: "Utilizar planchas de acrílico transparentes para aplanar los dedos.",
+                cr: "Perpendicular, dirigido al centro de la mano."
+              },
+              criteria: [
+                "Visualización del carpo para estudios de edad ósea."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "54 - 60 kV", mas: "4 - 6 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Sentado, mano en posición lateral estricta.",
+                part: "Mano de perfil, con dedos en abanico si es posible, o extendidos.",
+                cr: "Perpendicular, dirigido a la segunda articulación metacarpofalángica."
+              },
+              criteria: [
+                "Metacarpianos superpuestos lateralmente.",
+                "Falanges y articulaciones de perfil individualizadas."
+              ]
+            },
+            pediatric: {
+              kv: "48 - 54 kV", mas: "1.5 - 3 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Mano de perfil apoyada sobre cuña.",
+                part: "Sujetar suavemente el antebrazo y dedos.",
+                cr: "Perpendicular al plano lateral de la mano."
+              },
+              criteria: [
+                "Perfil del carpo y falanges sin rotaciones."
+              ]
+            }
+          },
+          {
+            name: "Oblicua",
+            adult: {
+              kv: "50 - 58 kV", mas: "3 - 5 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Sentado, mano rotada 45° lateralmente.",
+                part: "Mano apoyada en cuña de espuma para estabilidad de los dedos.",
+                cr: "Perpendicular, dirigido al centro de la tercera articulación metacarpofalángica."
+              },
+              criteria: [
+                "Tercero, cuarto y quinto metacarpianos superpuestos parcialmente en sus bases."
+              ]
+            },
+            pediatric: {
+              kv: "46 - 52 kV", mas: "1.5 - 2.5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Mano rotada 45° en oblicuidad.",
+                part: "Estabilizada de ser necesario por el tutor.",
+                cr: "Perpendicular a la zona media de la mano."
+              },
+              criteria: [
+                "Oblicuidad simétrica para evaluación del contorno óseo."
+              ]
+            }
+          },
+          {
+            name: "Norgaard Comparativa",
+            adult: {
+              kv: "52 - 60 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm (Apaisado)",
+              positioning: {
+                patient: "Sentado, ambas manos colocadas de forma supina y rotadas 45° medialmente.",
+                part: "Las caras dorsales de las manos se apoyan en cuñas a 45° (como atrapando una pelota).",
+                cr: "Perpendicular, dirigido a un punto medio entre ambas manos a nivel de los segundos metacarpianos."
+              },
+              criteria: [
+                "Visualización simétrica de ambas manos.",
+                "Especial para detectar erosiones tempranas en artritis reumatoide en cabezas metacarpofalángicas."
+              ]
+            },
+            pediatric: {
+              kv: "46 - 54 kV", mas: "2 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Misma posición de abanico inverso comparativo.",
+                part: "Asistencia sutil del adulto para mantener la rotación medial.",
+                cr: "Perpendicular centrado en el plano medio intermedio."
+              },
+              criteria: [
+                "Simetría bilateral sin artefactos cinéticos."
+              ]
+            }
+          }
+        ]
+      },
+      claviculas: {
+        name: "Clavículas",
+        category: "superior",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "65 - 75 kV", mas: "8 - 12 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Apaisado)",
+              positioning: {
+                patient: "Bipedestación o decúbito supino, hombros hacia atrás contra el estativo.",
+                part: "Clavícula centrada, brazos extendidos a los lados.",
+                cr: "Perpendicular a la mitad de la diáfisis clavicular."
+              },
+              criteria: [
+                "Clavícula completa incluida, desde el esternón hasta el acromion."
+              ]
+            },
+            pediatric: {
+              kv: "55 - 62 kV", mas: "2.5 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito supino en camilla.",
+                part: "Sujetar la cabeza y el tórax.",
+                cr: "Perpendicular, dirigido al centro de la clavícula."
+              },
+              criteria: [
+                "Detalle óseo libre de artefactos de movimiento."
+              ]
+            }
+          },
+          {
+            name: "AP Axial",
+            adult: {
+              kv: "65 - 75 kV", mas: "8 - 12 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Apaisado)",
+              positioning: {
+                patient: "Bipedestación o decúbito supino.",
+                part: "Clavícula alineada de forma horizontal.",
+                cr: "Angulado 15° a 30° cefálico, dirigido a la mitad de la diáfisis clavicular."
+              },
+              criteria: [
+                "La clavícula se proyecta por encima de las costillas apicales pulmonares y de la escápula."
+              ]
+            },
+            pediatric: {
+              kv: "55 - 62 kV", mas: "2.5 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito supino.",
+                part: "Hombros planos contra el receptor.",
+                cr: "Angulado 15° cefálico al punto medio."
+              },
+              criteria: [
+                "Estructura clavicular libre de superposición costal."
+              ]
+            }
+          }
+        ]
+      },
+      escapula: {
+        name: "Escápula",
+        category: "superior",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "70 - 80 kV", mas: "12 - 16 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito supino o bipedestación con la espalda apoyada.",
+                part: "Brazo abducido a 90° con la mano supinada para apartar la escápula del pulmón.",
+                cr: "Perpendicular, centrado 5 cm inferior a la coracoides."
+              },
+              criteria: [
+                "Escápula lateralizada, libre de superposición de los campos pulmonares."
+              ]
+            },
+            pediatric: {
+              kv: "58 - 65 kV", mas: "3 - 5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito supino.",
+                part: "Brazo afectado abducido suavemente.",
+                cr: "Perpendicular al centro escapular."
+              },
+              criteria: [
+                "Adecuada visualización del cuerpo y espina de la escápula."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "75 - 85 kV", mas: "15 - 25 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Oblicua anterior (45-60°) con el hombro afectado contra el estativo.",
+                part: "Brazo lesionado cruzando el pecho o en la cintura para delinear el cuerpo escapular.",
+                cr: "Perpendicular, centrado en el borde medial de la escápula."
+              },
+              criteria: [
+                "Cuerpo de la escápula visualizado de perfil absoluto, libre de costillas."
+              ]
+            },
+            pediatric: {
+              kv: "62 - 70 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral asistido.",
+                part: "Alinear tórax para colocar escápula de perfil.",
+                cr: "Perpendicular al borde lateral escapular."
+              },
+              criteria: [
+                "Escápula lateralizada nítida sin artefactos."
+              ]
+            }
+          }
+        ]
+      },
+      muneca: {
+        name: "Muñeca",
+        category: "superior",
+        views: [
+          {
+            name: "PA",
+            adult: {
+              kv: "52 - 60 kV", mas: "3 - 5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Sentado al final de la mesa con axila a la misma altura.",
+                part: "Mano y muñeca pegadas al chasis, dedos arqueados para pegar carpo.",
+                cr: "Perpendicular, dirigido al centro del carpo."
+              },
+              criteria: [
+                "Huesos del carpo, cúbito y radio distales nítidos.",
+                "Mínima superposición de la base de metacarpianos."
+              ]
+            },
+            pediatric: {
+              kv: "44 - 50 kV", mas: "1.2 - 2 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado.",
+                part: "Fijar mano plana mediante dispositivo transparente.",
+                cr: "Perpendicular a la zona carpiana."
+              },
+              criteria: [
+                "Presencia y tamaño de núcleos de osificación carpiana."
+              ]
+            }
+          },
+          {
+            name: "Oblicua",
+            adult: {
+              kv: "52 - 60 kV", mas: "3 - 5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado, muñeca rotada 45° lateralmente.",
+                part: "Apoyar sobre cuña para mantener el ángulo.",
+                cr: "Perpendicular al carpo."
+              },
+              criteria: [
+                "Hueso escafoides rotado y visible en su extensión longitudinal."
+              ]
+            },
+            pediatric: {
+              kv: "44 - 50 kV", mas: "1.2 - 2 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado, oblicuidad de muñeca asistida.",
+                part: "Soporte de cuña para evitar rotaciones de más.",
+                cr: "Perpendicular al carpo."
+              },
+              criteria: [
+                "Oblicuidad idónea para observar trazos distales."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "55 - 62 kV", mas: "4 - 6 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado, muñeca de perfil estricto.",
+                part: "Pulgar hacia arriba, cúbito pegado al receptor.",
+                cr: "Perpendicular a la articulación radiocarpiana lateral."
+              },
+              criteria: [
+                "Radio y cúbito distales superpuestos.",
+                "Alineación semilunar y radio de perfil."
+              ]
+            },
+            pediatric: {
+              kv: "46 - 52 kV", mas: "1.5 - 2.5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Muñeca lateral apoyada.",
+                part: "Mantener pulgar arriba.",
+                cr: "Perpendicular al radio distal."
+              },
+              criteria: [
+                "Perfil del carpo sin rotación."
+              ]
+            }
+          }
+        ]
+      },
+      pelvis: {
+        name: "Pelvis",
+        category: "inferior",
+        views: [
+          {
+            name: "AP (Anteroposterior)",
+            adult: {
+              kv: "75 - 85 kV", mas: "20 - 35 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Apaisado)",
+              positioning: {
+                patient: "Decúbito supino, plano sagital medio perpendicular al centro de la mesa.",
+                part: "Rotar extremidades inferiores 15-20° hacia adentro para poner cuellos femorales en paralelo.",
+                cr: "Perpendicular, centrado al nivel medio entre espinas ilíacas y sínfisis púbica."
+              },
+              criteria: [
+                "Trocánter mayor de perfil, trocánter menor casi invisible.",
+                "Alas ilíacas y agujeros obturadores simétricos."
+              ]
+            },
+            pediatric: {
+              kv: "62 - 72 kV", mas: "6 - 12 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm (Apaisado)",
+              positioning: {
+                patient: "Decúbito supino con pelvis perfectamente recta.",
+                part: "Mantener muslos simétricos fijados.",
+                cr: "Perpendicular centrado en la sínfisis del pubis."
+              },
+              criteria: [
+                "Simetría absoluta de la pelvis para descarte de displasia de cadera."
+              ]
+            }
+          },
+          {
+            name: "Löwenstein (Rana)",
+            adult: {
+              kv: "75 - 80 kV", mas: "15 - 25 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Apaisado)",
+              positioning: {
+                patient: "Decúbito supino, centrado en plano sagital medio de la mesa.",
+                part: "Flexionar ambas rodillas a 90°, juntar plantas de los pies y abducir los muslos lateralmente 45°.",
+                cr: "Perpendicular, dirigido a la línea media del chasis a nivel de la sínfisis púbica."
+              },
+              criteria: [
+                "Ambos fémures proximales abducidos en igual ángulo.",
+                "Visualización simétrica de los cuellos femorales y cabezas del fémur bilateralmente."
+              ]
+            },
+            pediatric: {
+              kv: "60 - 68 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm (Apaisado)",
+              positioning: {
+                patient: "Decúbito supino con posición de rana simétrica.",
+                part: "Se sostiene sutilmente mediante soporte de sacos de arena.",
+                cr: "Perpendicular a nivel de la sínfisis."
+              },
+              criteria: [
+                "Adecuado descarte de deslizamiento epifisiario de la cabeza femoral."
+              ]
+            }
+          },
+          {
+            name: "Inlet (Entrada Pelviana)",
+            adult: {
+              kv: "80 - 85 kV", mas: "25 - 40 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Apaisado)",
+              positioning: {
+                patient: "Decúbito supino con las extremidades extendidas.",
+                part: "Centrar plano sagital medio a la línea media de la camilla.",
+                cr: "Angulado 40° caudal, dirigido a la línea media a nivel de las espinas ilíacas anterosuperiores."
+              },
+              criteria: [
+                "Anillo pelviano visualizado en forma redonda casi perfecta.",
+                "Especial para valorar desplazamiento posterior del anillo pélvico."
+              ]
+            },
+            pediatric: {
+              kv: "65 - 72 kV", mas: "8 - 15 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm (Apaisado)",
+              positioning: {
+                patient: "Decúbito supino.",
+                part: "Alineado en línea central.",
+                cr: "Angulado 40° caudal dirigido al centro pélvico."
+              },
+              criteria: [
+                "Visualización íntegra de la arquitectura del anillo pelviano."
+              ]
+            }
+          },
+          {
+            name: "Outlet (Salida Pelviana)",
+            adult: {
+              kv: "80 - 85 kV", mas: "25 - 40 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Apaisado)",
+              positioning: {
+                patient: "Decúbito supino.",
+                part: "Plano sagital medio alineado a la mesa.",
+                cr: "Angulado 20°-35° cefálico en varones, y 30°-45° cefálico en mujeres, centrado 5 cm distal a la sínfisis."
+              },
+              criteria: [
+                "Cuerpo e isquion de pubis alargados, bien definidos.",
+                "Excelente proyección para descartar fracturas de las ramas isquiopúbicas."
+              ]
+            },
+            pediatric: {
+              kv: "65 - 72 kV", mas: "8 - 15 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito supino.",
+                part: "Estabilizado por el adulto.",
+                cr: "Angulado 25° a 30° cefálico, dirigido al pubis distal."
+              },
+              criteria: [
+                "Ramas isquiopúbicas pediátricas visibles sin rotación."
+              ]
+            }
+          }
+        ]
+      },
+      cadera: {
+        name: "Cadera",
+        category: "inferior",
+        views: [
+          {
+            name: "AP Unilateral",
+            adult: {
+              kv: "75 - 80 kV", mas: "15 - 20 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito supino con cadera de interés centrada al chasis.",
+                part: "Rotar extremidad afectada 15° hacia adentro.",
+                cr: "Perpendicular, centrado al cuello femoral (aproximadamente 5 cm distal y perpendicular a la bisectriz ASIS-pubis)."
+              },
+              criteria: [
+                "Cabeza del fémur de perfil y espacio articular glenohumeral pélvico visible.",
+                "Trocánter mayor perfilado externamente."
+              ]
+            },
+            pediatric: {
+              kv: "60 - 68 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Supino, muslo inmovilizado.",
+                part: "Pierna afectada recta en posición neutra.",
+                cr: "Perpendicular, centrado en la articulación coxofemoral."
+              },
+              criteria: [
+                "Detalle óseo de la cabeza femoral en desarrollo."
+              ]
+            }
+          },
+          {
+            name: "Axial (Lauenstein)",
+            adult: {
+              kv: "75 - 82 kV", mas: "15 - 25 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Apaisado)",
+              positioning: {
+                patient: "Decúbito supino, girando el cuerpo ligeramente hacia el lado de interés.",
+                part: "Flexionar la rodilla afectada y abducir el fémur de tal modo que quede casi plano en la mesa.",
+                cr: "Perpendicular, centrado al cuello femoral medio."
+              },
+              criteria: [
+                "Cuello femoral y cabeza del fémur de perfil lateral nítido."
+              ]
+            },
+            pediatric: {
+              kv: "60 - 68 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Supino, flexionando rodilla en posición de rana unilateral.",
+                part: "Estabilizado por el tutor.",
+                cr: "Perpendicular al cuello femoral."
+              },
+              criteria: [
+                "Evaluación del cartílago coxofemoral de perfil."
+              ]
+            }
+          },
+          {
+            name: "Alar (Judet)",
+            adult: {
+              kv: "75 - 85 kV", mas: "20 - 30 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Paciente oblicuado posterior a 45° (RPO o LPO según lado de interés), colocando la cadera afectada pegada a la camilla.",
+                part: "Pelvis se apoya en cuñas de espuma rígida.",
+                cr: "Perpendicular, centrado 5 cm distal al ASIS más cercano a la placa."
+              },
+              criteria: [
+                "Ala ilíaca del lado afectado visualizada plana y de perfil.",
+                "Borde posterior del acetábulo y pilar anterior visibles."
+              ]
+            },
+            pediatric: {
+              kv: "65 - 72 kV", mas: "6 - 12 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito oblicuo asistido.",
+                part: "Apoyo con cuña blanda.",
+                cr: "Perpendicular a la cadera más baja."
+              },
+              criteria: [
+                "Hueso ilíaco proyectado de perfil alar."
+              ]
+            }
+          },
+          {
+            name: "Obturatriz (Judet)",
+            adult: {
+              kv: "75 - 85 kV", mas: "20 - 30 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Paciente oblicuado posterior a 45°, colocando la cadera afectada elevada (alejada de la mesa).",
+                part: "Pelvis sostenida con cuña de espuma.",
+                cr: "Perpendicular, dirigido 5 cm distal al ASIS de la cadera elevada."
+              },
+              criteria: [
+                "Agujero obturador de la cadera afectada visualizado plano y abierto.",
+                "Pilar posterior del acetábulo y borde anterior visibles."
+              ]
+            },
+            pediatric: {
+              kv: "65 - 72 kV", mas: "6 - 12 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito oblicuo rotado hacia arriba.",
+                part: "Sujetar la pelvis simétrica.",
+                cr: "Perpendicular a la articulación superior."
+              },
+              criteria: [
+                "Agujero obturador abierto simétrico."
+              ]
+            }
+          }
+        ]
+      },
+      femur: {
+        name: "Fémur",
+        category: "inferior",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "70 - 80 kV", mas: "15 - 20 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito supino, pierna extendida.",
+                part: "Rotación interna de 15° de toda la pierna, fémur centrado al chasis.",
+                cr: "Perpendicular a la diáfisis media."
+              },
+              criteria: [
+                "Extensión ósea del fémur, incluyendo al menos rodilla o cadera.",
+                "Estructura trabecular nítida."
+              ]
+            },
+            pediatric: {
+              kv: "58 - 66 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "30x35 cm",
+              positioning: {
+                patient: "Decúbito supino.",
+                part: "Pierna en posición neutra.",
+                cr: "Perpendicular a la mitad del muslo."
+              },
+              criteria: [
+                "Hueso largo completo sin rotaciones."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "75 - 85 kV", mas: "20 - 25 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito lateral sobre el lado afectado.",
+                part: "Rodilla afectada ligeramente flexionada, pierna opuesta cruzada por detrás.",
+                cr: "Perpendicular a la diáfisis media."
+              },
+              criteria: [
+                "Fémur de perfil lateral, cóndilos del fémur casi superpuestos."
+              ]
+            },
+            pediatric: {
+              kv: "62 - 70 kV", mas: "5 - 10 mAs", grid: "NO", dfi: "100 cm", chassis: "30x35 cm",
+              positioning: {
+                patient: "Decúbito lateral asistido.",
+                part: "Fijar cadera y pierna opuesta hacia atrás.",
+                cr: "Perpendicular a la diáfisis media."
+              },
+              criteria: [
+                "Fémur de perfil sin artefactos por movimiento."
+              ]
+            }
+          }
+        ]
+      },
+      rodilla: {
+        name: "Rodilla",
+        category: "inferior",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "62 - 72 kV", mas: "6 - 12 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito supino, extremidad extendida.",
+                part: "Rotación medial del pie de 3-5° para alinear la rótula.",
+                cr: "Angulado 3-5° cefálico (según contextura), centrado 1.5 cm distal a la rótula."
+              },
+              criteria: [
+                "Espacio articular femorotibial visible y abierto uniformemente."
+              ]
+            },
+            pediatric: {
+              kv: "50 - 60 kV", mas: "2 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito supino.",
+                part: "Sujeción estable por el tutor.",
+                cr: "Perpendicular a la articulación."
+              },
+              criteria: [
+                "Cartílagos articulares y extremos óseos claros."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "62 - 72 kV", mas: "6 - 12 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral sobre lado lesionado, rodilla flexionada 20-30°.",
+                part: "Cóndilos femorales superpuestos.",
+                cr: "Angulado 5° cefálico, centrado a la articulación de la rodilla."
+              },
+              criteria: [
+                "Cóndilos femorales superpuestos de perfil, rótula de perfil estricto."
+              ]
+            },
+            pediatric: {
+              kv: "50 - 60 kV", mas: "2 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral asistido.",
+                part: "Rodilla en ligera flexión.",
+                cr: "Perpendicular, centrado en el compartimiento lateral."
+              },
+              criteria: [
+                "Rótula y fémur distal sin rotación."
+              ]
+            }
+          },
+          {
+            name: "Rosenberg",
+            adult: {
+              kv: "65 - 75 kV", mas: "8 - 12 mAs", grid: "SÍ (Bucky mural)", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación con rodillas flexionadas 45°, apoyando la cara anterior en el estativo vertical.",
+                part: "Peso corporal distribuido en ambos pies de manera uniforme.",
+                cr: "Angulado 10° caudal, dirigido al espacio articular medio (altura del polo patelar inferior)."
+              },
+              criteria: [
+                "Visualización perfecta del estrechamiento del espacio articular bajo carga.",
+                "Fosa intercondílea parcialmente visible."
+              ]
+            },
+            pediatric: {
+              kv: "52 - 60 kV", mas: "3 - 5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Bipedestación con flexión asistida de rodillas si coopera.",
+                part: "Cara anterior contra el receptor.",
+                cr: "Angulado 10° caudal centrado en el espacio articular."
+              },
+              criteria: [
+                "Evaluación del estado articular infantil en carga."
+              ]
+            }
+          },
+          {
+            name: "Fosa Intercondílea",
+            adult: {
+              kv: "60 - 70 kV", mas: "6 - 10 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito prono en la mesa de exploración (Método Camp Coventry).",
+                part: "Flexionar la rodilla afectada entre 40° y 50°, estabilizando el pie.",
+                cr: "Angulado 40° a 50° caudal (según flexión), dirigido a la fosa poplítea."
+              },
+              criteria: [
+                "Túnel o fosa intercondílea totalmente abierta y libre de rótula.",
+                "Eminencias intercondíleas nítidas para descarte de fracturas por avulsión de ligamentos."
+              ]
+            },
+            pediatric: {
+              kv: "50 - 58 kV", mas: "2 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito prono con rodilla flexionada 40°.",
+                part: "Estabilizar con sacos de arena en el pie.",
+                cr: "Angulado 40° caudal dirigido al hueco poplíteo."
+              },
+              criteria: [
+                "Fosa intercondílea nítida y visible."
+              ]
+            }
+          }
+        ]
+      },
+      patela: {
+        name: "Patela (Rótula)",
+        category: "inferior",
+        views: [
+          {
+            name: "Axial (Settegast)",
+            adult: {
+              kv: "60 - 70 kV", mas: "6 - 10 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito prono con flexión máxima de la rodilla (>90°).",
+                part: "Traccionar el pie de forma pasiva con una venda.",
+                cr: "Angulado 15° a 20° cefálico a través del espacio femororrotuliano."
+              },
+              criteria: [
+                "Espacio articular femororrotuliano abierto.",
+                "Patela de perfil sin superposición del fémur."
+              ]
+            },
+            pediatric: {
+              kv: "52 - 60 kV", mas: "2 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito prono.",
+                part: "Flexión suave sin forzar la articulación.",
+                cr: "Rayo angulado al espacio femororrotuliano."
+              },
+              criteria: [
+                "Articulación patelar visible."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "60 - 68 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral sobre la rodilla afectada con flexión de 5-10°.",
+                part: "Rodilla casi extendida para no tensar tendón.",
+                cr: "Perpendicular, centrado en la patela media lateral."
+              },
+              criteria: [
+                "Patela de perfil estricto y espacio subpatelar despejado."
+              ]
+            },
+            pediatric: {
+              kv: "50 - 56 kV", mas: "1.5 - 3 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral.",
+                part: "Sujetar muslo y pierna.",
+                cr: "Perpendicular a la rótula lateral."
+              },
+              criteria: [
+                "Rótula libre de rotaciones."
+              ]
+            }
+          }
+        ]
+      },
+      tobillo: {
+        name: "Tobillo",
+        category: "inferior",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "60 - 65 kV", mas: "4 - 6 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito supino, tobillo centrado.",
+                part: "Pie a 90° con la pierna.",
+                cr: "Perpendicular, dirigido al punto medio entre ambos maléolos."
+              },
+              criteria: [
+                "Espacio articular tibiotalar abierto."
+              ]
+            },
+            pediatric: {
+              kv: "48 - 52 kV", mas: "1.5 - 2.5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Supino asistido.",
+                part: "Tobillo recto.",
+                cr: "Perpendicular al centro maleolar."
+              },
+              criteria: [
+                "Espacios cartilaginosos claros."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "60 - 65 kV", mas: "5 - 7 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral, lado externo pegado.",
+                part: "Pie a 90°.",
+                cr: "Perpendicular al maléolo interno."
+              },
+              criteria: [
+                "Articulación tibiotalar de perfil, superposición de maléolos."
+              ]
+            },
+            pediatric: {
+              kv: "50 - 54 kV", mas: "2 - 3 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral asistido.",
+                part: "Inmovilizar pie.",
+                cr: "Perpendicular al maléolo lateral."
+              },
+              criteria: [
+                "Tobillo de perfil nítido."
+              ]
+            }
+          },
+          {
+            name: "Mortaja (Oblicua)",
+            adult: {
+              kv: "62 - 68 kV", mas: "5 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito supino, pierna extendida.",
+                part: "Rotación interna completa del pie y la pierna de 15° a 20°.",
+                cr: "Perpendicular, centrado al tobillo medio."
+              },
+              criteria: [
+                "Espacios lateral, medial y superior de la mortaja del tobillo abiertos."
+              ]
+            },
+            pediatric: {
+              kv: "50 - 55 kV", mas: "2 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Supino, rotado interno 15°.",
+                part: "Mantener rotación de forma estable.",
+                cr: "Perpendicular al tobillo."
+              },
+              criteria: [
+                "Mortaja simétrica abierta."
+              ]
+            }
+          }
+        ]
+      },
+      pie: {
+        name: "Pie",
+        category: "inferior",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "55 - 62 kV", mas: "3.5 - 6 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Sentado en la camilla con rodilla flexionada, planta del pie plana.",
+                part: "Alinear eje del pie.",
+                cr: "Angulado 10° cefálico, dirigido a la base del tercer metatarsiano."
+              },
+              criteria: [
+                "Falanges y metatarsianos completos sin rotación excesiva."
+              ]
+            },
+            pediatric: {
+              kv: "46 - 54 kV", mas: "1.5 - 2.5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado.",
+                part: "Planta apoyada plana.",
+                cr: "Angulado 10° cefálico al centro del pie."
+              },
+              criteria: [
+                "Evaluación del desarrollo metatarsiano."
+              ]
+            }
+          },
+          {
+            name: "Oblicua",
+            adult: {
+              kv: "55 - 62 kV", mas: "4 - 6 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Sentado, rodilla flexionada.",
+                part: "Rotar pie 30-40° medialmente.",
+                cr: "Perpendicular, dirigido a la base del tercer metatarsiano."
+              },
+              criteria: [
+                "Espacios intermetatarsianos abiertos entre el primero y segundo."
+              ]
+            },
+            pediatric: {
+              kv: "46 - 54 kV", mas: "1.5 - 2.5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Pie oblicuado 30°.",
+                part: "Uso de cuña de espuma.",
+                cr: "Perpendicular al centro del empeine."
+              },
+              criteria: [
+                "Estructura ósea del pie con oblicuidad adecuada."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "58 - 65 kV", mas: "5 - 8 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Acostado sobre lado afectado, borde externo plano.",
+                part: "Tobillo a 90°.",
+                cr: "Perpendicular, centrado en el centro del pie (metatarso medio)."
+              },
+              criteria: [
+                "Metatarsianos casi superpuestos y perfil lateral del tarso."
+              ]
+            },
+            pediatric: {
+              kv: "48 - 56 kV", mas: "2 - 4 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral.",
+                part: "Alinear pie de perfil.",
+                cr: "Perpendicular al metatarso medio."
+              },
+              criteria: [
+                "Pie lateral de perfil estricto."
+              ]
+            }
+          }
+        ]
+      },
+      columna_cervical: {
+        name: "Columna Cervical",
+        category: "axial",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "75 - 80 kV", mas: "12 - 16 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Supino o de pie, mentón elevado para despejar C1-C2.",
+                part: "Línea del mentón perpendicular al receptor.",
+                cr: "Angulado 15-20° cefálico, dirigido a nivel de C4."
+              },
+              criteria: [
+                "C3 a T2 visibles. Mandíbula por encima de los cuerpos de C1-C2."
+              ]
+            },
+            pediatric: {
+              kv: "60 - 65 kV", mas: "3 - 5 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Supino, cabeza recta.",
+                part: "Evitar hiperextensión del mentón.",
+                cr: "Angulado 15° cefálico a nivel de C4."
+              },
+              criteria: [
+                "Cuerpos vertebrales cervicales alineados."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "75 - 85 kV", mas: "15 - 25 mAs", grid: "SÍ", dfi: "150 - 180 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación de perfil, hombros caídos al máximo.",
+                part: "Mentón elevado.",
+                cr: "Perpendicular al receptor, centrado en C4."
+              },
+              criteria: [
+                "Siete cervicales visibles incluyendo articulaciones cigapofisarias."
+              ]
+            },
+            pediatric: {
+              kv: "65 - 70 kV", mas: "4 - 8 mAs", grid: "NO", dfi: "150 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral.",
+                part: "Hombros traccionados abajo por tutor con guantes plomados.",
+                cr: "Horizontal, perpendicular a C4."
+              },
+              criteria: [
+                "Perfil nítido de la región cervical de C1 a C7."
+              ]
+            }
+          },
+          {
+            name: "Oblicuas (AP u PA)",
+            adult: {
+              kv: "75 - 82 kV", mas: "15 - 25 mAs", grid: "SÍ", dfi: "150 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación, rotando el cuerpo entero del paciente en 45°.",
+                part: "Cabeza mantenida alineada con el tronco en oblicua.",
+                cr: "Angulado 15° cefálico (para oblicua posterior) centrado en C4."
+              },
+              criteria: [
+                "Agujeros de conjunción del lado de interés totalmente abiertos."
+              ]
+            },
+            pediatric: {
+              kv: "62 - 68 kV", mas: "5 - 10 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Supino, oblicuado con cuñas.",
+                part: "Sujetar tronco de forma simétrica.",
+                cr: "Angulado 15° cefálico a C4."
+              },
+              criteria: [
+                "Evaluación del canal y agujeros de salida intervertebrales."
+              ]
+            }
+          },
+          {
+            name: "Flexión Dinámica",
+            adult: {
+              kv: "75 - 85 kV", mas: "15 - 25 mAs", grid: "SÍ", dfi: "150 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación en posición lateral estricta (de perfil).",
+                part: "El paciente debe llevar el mentón hacia abajo de forma voluntaria hasta tocar el pecho (hiperflexión).",
+                cr: "Horizontal, perpendicular al receptor de imagen, centrado en C4."
+              },
+              criteria: [
+                "Separación de las apófisis espinosas cervicales.",
+                "Cuerpos vertebrales alineados en arco de flexión amplia."
+              ]
+            },
+            pediatric: {
+              kv: "65 - 72 kV", mas: "5 - 10 mAs", grid: "NO", dfi: "120 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado, flexión de cabeza asistida muy sutilmente.",
+                part: "Evitar tirones agresivos del cuello.",
+                cr: "Horizontal, perpendicular a C4."
+              },
+              criteria: [
+                "Adecuado descarte de subluxación o inestabilidad atloidoaxoidea."
+              ]
+            }
+          },
+          {
+            name: "Extensión Dinámica",
+            adult: {
+              kv: "75 - 85 kV", mas: "15 - 25 mAs", grid: "SÍ", dfi: "150 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación en posición lateral estricta.",
+                part: "El paciente eleva el mentón e inclina la cabeza hacia atrás al máximo posible (hiperextensión).",
+                cr: "Horizontal, perpendicular al receptor, centrado en C4."
+              },
+              criteria: [
+                "Aproximación o contacto de las apófisis espinosas cervicales.",
+                "Alineación de los cuerpos vertebrales en arco posterior de extensión."
+              ]
+            },
+            pediatric: {
+              kv: "65 - 72 kV", mas: "5 - 10 mAs", grid: "NO", dfi: "120 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sentado de perfil, cabeza extendida atrás suavemente.",
+                part: "Padres asisten para estabilizar.",
+                cr: "Horizontal, perpendicular a C4."
+              },
+              criteria: [
+                "Rango de extensión ósea cervical visible de perfil."
+              ]
+            }
+          }
+        ]
+      },
+      columna_toracica: {
+        name: "Columna Torácica",
+        category: "axial",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "80 - 90 kV", mas: "25 - 45 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito supino, brazos al costado.",
+                part: "Alinear línea media del tronco.",
+                cr: "Perpendicular, centrado en T7."
+              },
+              criteria: [
+                "Vértebras torácicas C7 a L1 visibles con espacios intervertebrales abiertos."
+              ]
+            },
+            pediatric: {
+              kv: "66 - 76 kV", mas: "8 - 15 mAs", grid: "SÍ (niños mayores)", dfi: "100 cm", chassis: "30x35 cm",
+              positioning: {
+                patient: "Decúbito supino.",
+                part: "Pelvis y hombros rectos.",
+                cr: "Perpendicular centrado en la línea media a nivel del pecho."
+              },
+              criteria: [
+                "Contorno vertebral sin rotaciones."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "85 - 95 kV", mas: "35 - 55 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito lateral izquierdo con rodillas flexionadas.",
+                part: "Brazos hacia el frente para no superponer los campos escapulares.",
+                cr: "Perpendicular, centrado a nivel de T7."
+              },
+              criteria: [
+                "Vértebras torácicas de perfil, espacios discales abiertos y costillas superpuestas."
+              ]
+            },
+            pediatric: {
+              kv: "70 - 80 kV", mas: "12 - 24 mAs", grid: "SÍ", dfi: "100 cm", chassis: "30x35 cm",
+              positioning: {
+                patient: "Decúbito lateral con cuña.",
+                part: "Brazos arriba.",
+                cr: "Perpendicular al centro del tórax lateral."
+              },
+              criteria: [
+                "Columna torácica lateral libre de artefactos."
+              ]
+            }
+          }
+        ]
+      },
+      columna_lumbar: {
+        name: "Columna Lumbar",
+        category: "axial",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "80 - 90 kV", mas: "25 - 40 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito supino con caderas y rodillas flexionadas para aplanar la lordosis lumbar.",
+                part: "Plano sagital medio alineado al centro de la mesa.",
+                cr: "Perpendicular, centrado a nivel de L3 (borde superior de las crestas ilíacas)."
+              },
+              criteria: [
+                "Vértebras T12 a S1 de frente, apófisis espinosas alineadas."
+              ]
+            },
+            pediatric: {
+              kv: "68 - 78 kV", mas: "8 - 15 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito supino con piernas ligeramente flexionadas.",
+                part: "Pelvis recta.",
+                cr: "Perpendicular al centro lumbar."
+              },
+              criteria: [
+                "Columna lumbar simétrica y alineada."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "85 - 95 kV", mas: "40 - 70 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito lateral con las rodillas flexionadas.",
+                part: "Apoyar la espalda recta mediante cuñas para que la columna quede paralela a la camilla.",
+                cr: "Perpendicular, dirigido a nivel de L3."
+              },
+              criteria: [
+                "Cuerpos vertebrales lumbares en perfil estricto, agujeros de conjunción visibles."
+              ]
+            },
+            pediatric: {
+              kv: "75 - 85 kV", mas: "12 - 24 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito lateral asistido.",
+                part: "Soporte de espuma debajo de la cintura del menor.",
+                cr: "Perpendicular al plano lateral de la columna lumbar."
+              },
+              criteria: [
+                "Perfil lumbar libre de rotación."
+              ]
+            }
+          },
+          {
+            name: "Quinto Espacio (L5-S1)",
+            adult: {
+              kv: "85 - 95 kV", mas: "50 - 80 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito lateral estricto.",
+                part: "Rodillas y caderas flexionadas, la columna debe mantenerse horizontal y alineada sin flexiones laterales.",
+                cr: "Angulado 5° caudal para varones y 8° caudal para mujeres, centrado 5 cm por debajo del ASIS."
+              },
+              criteria: [
+                "Espacio articular intervertebral L5-S1 totalmente abierto y en el centro del chasis.",
+                "Excelente definición del promontorio sacro de perfil."
+              ]
+            },
+            pediatric: {
+              kv: "70 - 80 kV", mas: "15 - 30 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral asistido.",
+                part: "Mantener la rectitud de la cadera.",
+                cr: "Angulado 5° caudal al centro de la unión lumbosacra."
+              },
+              criteria: [
+                "Articulación L5-S1 visible y nítida."
+              ]
+            }
+          },
+          {
+            name: "Flexión Dinámica",
+            adult: {
+              kv: "80 - 90 kV", mas: "40 - 70 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación lateral o decúbito lateral en camilla.",
+                part: "El paciente encorva voluntariamente la espalda hacia el frente (hiperflexión lumbar).",
+                cr: "Perpendicular, centrado a la altura de L3."
+              },
+              criteria: [
+                "Grado de movilidad e inestabilidad segmentaria visible.",
+                "Apertura amplia de las apófisis espinosas posteriores."
+              ]
+            },
+            pediatric: {
+              kv: "70 - 78 kV", mas: "12 - 24 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito lateral, encorvando rodillas hacia el pecho de forma pasiva.",
+                part: "Sujeción firme.",
+                cr: "Perpendicular a L3."
+              },
+              criteria: [
+                "Alineamiento vertebral dinámico en flexión."
+              ]
+            }
+          },
+          {
+            name: "Extensión Dinámica",
+            adult: {
+              kv: "80 - 90 kV", mas: "40 - 70 mAs", grid: "SÍ", dfi: "100 cm", chassis: "35x43 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación lateral o decúbito lateral.",
+                part: "El paciente inclina la espalda hacia atrás en máxima extensión voluntaria.",
+                cr: "Perpendicular, centrado en L3."
+              },
+              criteria: [
+                "Estabilidad en extensión visible. Compresión de apófisis espinosas traseras."
+              ]
+            },
+            pediatric: {
+              kv: "70 - 78 kV", mas: "12 - 24 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito lateral, empujando la espalda hacia atrás con soporte manual.",
+                part: "Inmovilización asistida.",
+                cr: "Perpendicular a L3."
+              },
+              criteria: [
+                "Alineamiento dinámico en extensión."
+              ]
+            }
+          }
+        ]
+      },
+      sacro_coxis: {
+        name: "Sacro-Coxis",
+        category: "axial",
+        views: [
+          {
+            name: "AP",
+            adult: {
+              kv: "80 - 90 kV", mas: "35 - 55 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "AP: Supino con piernas extendidas.",
+                part: "Alinear línea vertebral lumbar.",
+                cr: "Angulado 15° cefálico para Sacro, y 10° caudal para Coxis, centrado 5 cm arriba del pubis."
+              },
+              criteria: [
+                "Sacro o coxis proyectado libre de superposición de la sínfisis."
+              ]
+            },
+            pediatric: {
+              kv: "68 - 78 kV", mas: "15 - 28 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito supino en mesa.",
+                part: "Protección gonadal con cuidado de no tapar el sacro.",
+                cr: "Misma angulación pero con dosis optimizada."
+              },
+              criteria: [
+                "Sacro visible, articulaciones sacroilíacas simétricas."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "85 - 95 kV", mas: "40 - 65 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito lateral izquierdo.",
+                part: "Cadera de perfil estricto.",
+                cr: "Perpendicular centrado en la porción lateral del sacro/coxis."
+              },
+              criteria: [
+                "Perfil de sacro y coxis libre de rotación."
+              ]
+            },
+            pediatric: {
+              kv: "70 - 80 kV", mas: "15 - 30 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Decúbito lateral.",
+                part: "Apoyo con cuña de espuma.",
+                cr: "Perpendicular a la zona lateral de sacro."
+              },
+              criteria: [
+                "Perfil óseo bien definido."
+              ]
+            }
+          }
+        ]
+      },
+      craneo: {
+        name: "Cráneo",
+        category: "craneo",
+        views: [
+          {
+            name: "PA / AP",
+            adult: {
+              kv: "75 - 85 kV", mas: "24 - 40 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "PA: Cara pegada al Bucky, apoyando frente y nariz de manera uniforme.",
+                part: "Línea orbitomeatal (LOM) perpendicular a la placa. Plano sagital medio centrado.",
+                cr: "Perpendicular, saliendo por la glabela."
+              },
+              criteria: [
+                "Simetría bilateral, con peñascos temporales llenando completamente las órbitas."
+              ]
+            },
+            pediatric: {
+              kv: "65 - 75 kV", mas: "10 - 20 mAs", grid: "SÍ (Opcional)", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "AP: Decúbito supino asistido.",
+                part: "Fijación bilateral de la cabeza con almohadillas protectoras.",
+                cr: "Perpendicular, centrado en el nasión."
+              },
+              criteria: [
+                "Suturas craneales visibles sin rotación."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "70 - 80 kV", mas: "16 - 25 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Apaisado)",
+              positioning: {
+                patient: "Semiprono o bipedestación lateral.",
+                part: "Plano sagital medio paralelo al receptor. Línea interpupilar perpendicular al receptor.",
+                cr: "Perpendicular, centrado 5 cm superior al conducto auditivo externo."
+              },
+              criteria: [
+                "Silla turca visualizada en perfil estricto sin rotación."
+              ]
+            },
+            pediatric: {
+              kv: "60 - 70 kV", mas: "8 - 12 mAs", grid: "NO", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Decúbito supino con cabeza rotada de lado.",
+                part: "Sujetar tronco con firmeza.",
+                cr: "Perpendicular, dirigido al conducto auditivo externo."
+              },
+              criteria: [
+                "Perfil de la calota ósea infantil clara."
+              ]
+            }
+          },
+          {
+            name: "Towne",
+            adult: {
+              kv: "80 - 88 kV", mas: "25 - 45 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Decúbito supino, barbilla metida al pecho.",
+                part: "LOM perpendicular al receptor.",
+                cr: "Angulado 30° caudal (si LOM es perpendicular) o 37° caudal (si LIOM es perpendicular), entrando 6 cm sobre la glabela."
+              },
+              criteria: [
+                "Dorso de la silla turca proyectado en el interior del agujero magno.",
+                "Estructuras occipitales simétricas."
+              ]
+            },
+            pediatric: {
+              kv: "68 - 76 kV", mas: "12 - 22 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm",
+              positioning: {
+                patient: "Supino, cabeza flexionada sutilmente.",
+                part: "Mantener plano medio recto.",
+                cr: "Angulado 30° caudal dirigido al hueso occipital."
+              },
+              criteria: [
+                "Occipital abierto sin rotaciones."
+              ]
+            }
+          }
+        ]
+      },
+      cara: {
+        name: "Cara",
+        category: "craneo",
+        views: [
+          {
+            name: "Waters",
+            adult: {
+              kv: "75 - 82 kV", mas: "20 - 32 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación, mentón apoyado contra el estativo de pared, nariz separada de la placa 1.5 cm.",
+                part: "Línea mentomeatal perpendicular al plano del receptor.",
+                cr: "Perpendicular, saliendo por el acantión."
+              },
+              criteria: [
+                "Rebordes petrosos proyectados inmediatamente por debajo de los senos maxilares.",
+                "Huesos cigomáticos y órbitas simétricas."
+              ]
+            },
+            pediatric: {
+              kv: "62 - 72 kV", mas: "8 - 15 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sedestación, mentón elevado.",
+                part: "Sujetar cabeza externamente.",
+                cr: "Perpendicular, saliendo por el acantión."
+              },
+              criteria: [
+                "Órbitas y maxilares bien contrastados."
+              ]
+            }
+          },
+          {
+            name: "Caldwell",
+            adult: {
+              kv: "75 - 82 kV", mas: "20 - 32 mAs", grid: "SÍ", dfi: "100 cm", chassis: "24x30 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación, apoyando frente y nariz de manera uniforme.",
+                part: "LOM perpendicular al receptor.",
+                cr: "Angulado 15° caudal, saliendo por el nasión."
+              },
+              criteria: [
+                "Peñascos temporales proyectados en el tercio inferior de las órbitas oculares."
+              ]
+            },
+            pediatric: {
+              kv: "62 - 72 kV", mas: "8 - 15 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Supino, LOM perpendicular.",
+                part: "Cabeza recta asistida.",
+                cr: "Angulado 15° caudal saliendo por nasión."
+              },
+              criteria: [
+                "Rebordes orbitarios alineados."
+              ]
+            }
+          },
+          {
+            name: "Lateral",
+            adult: {
+              kv: "70 - 78 kV", mas: "12 - 20 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación de perfil, plano sagital medio paralelo al receptor.",
+                part: "Línea interpupilar perpendicular al receptor.",
+                cr: "Perpendicular, dirigido a la región cigomática media."
+              },
+              criteria: [
+                "Huesos de la cara superpuestos de perfil, silla turca sin rotaciones."
+              ]
+            },
+            pediatric: {
+              kv: "58 - 65 kV", mas: "5 - 10 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Supino con cabeza rotada.",
+                part: "Mantener perfil lateral estricto.",
+                cr: "Perpendicular al centro cigomático."
+              },
+              criteria: [
+                "Huesos faciales pediátricos claros."
+              ]
+            }
+          }
+        ]
+      },
+      cnp: {
+        name: "CNP (Senos Paranasales)",
+        category: "craneo",
+        views: [
+          {
+            name: "Waters (Senos)",
+            adult: {
+              kv: "75 - 85 kV", mas: "24 - 35 mAs", grid: "SÍ (Imprescindible bipedestación)", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación. Mentón apoyado contra el estativo vertical, nariz separada 1 cm de la placa.",
+                part: "LOM forma 37° con el plano de la placa.",
+                cr: "Horizontal y perpendicular, saliendo por el acantión."
+              },
+              criteria: [
+                "Senos maxilares bien neumatizados libres de peñascos.",
+                "Niveles hidroaéreos nítidos visibles."
+              ]
+            },
+            pediatric: {
+              kv: "64 - 74 kV", mas: "10 - 18 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sedestación, mentón elevado.",
+                part: "Inmovilizar con suavidad.",
+                cr: "Horizontal, saliendo por acantión."
+              },
+              criteria: [
+                "Senos maxilares infantiles visibles neumatizados."
+              ]
+            }
+          },
+          {
+            name: "Caldwell (Senos)",
+            adult: {
+              kv: "75 - 85 kV", mas: "24 - 35 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación, frente y nariz apoyadas.",
+                part: "LOM perpendicular.",
+                cr: "Angulado 15° caudal (con chasis angulado o rayo horizontal angulando la cabeza), saliendo por nasión."
+              },
+              criteria: [
+                "Senos frontales y celdillas etmoidales anteriores nítidas."
+              ]
+            },
+            pediatric: {
+              kv: "64 - 74 kV", mas: "10 - 18 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sedestación frente al receptor.",
+                part: "Sujetar cabeza.",
+                cr: "Horizontal perpendicular a nivel del nasión."
+              },
+              criteria: [
+                "Senos frontales e infundíbulo claros."
+              ]
+            }
+          },
+          {
+            name: "Lateral (Senos)",
+            adult: {
+              kv: "70 - 78 kV", mas: "16 - 25 mAs", grid: "SÍ", dfi: "100 cm", chassis: "18x24 cm (Vertical)",
+              positioning: {
+                patient: "Bipedestación lateral.",
+                part: "Cabeza de perfil estricto.",
+                cr: "Horizontal perpendicular, centrado 2 cm posterior al canto externo del ojo."
+              },
+              criteria: [
+                "Seno esfenoidal, maxilares y frontales superpuestos de perfil.",
+                "Silla turca de perfil."
+              ]
+            },
+            pediatric: {
+              kv: "58 - 66 kV", mas: "6 - 12 mAs", grid: "NO", dfi: "100 cm", chassis: "18x24 cm",
+              positioning: {
+                patient: "Sedestación lateral.",
+                part: "Padres sostienen de perfil.",
+                cr: "Horizontal centrado detrás de órbita."
+              },
+              criteria: [
+                "Senos paranasales pediátricos en perfil adecuado."
+              ]
+            }
+          }
+        ]
+      }
+    };
+
+    // Estado de la Aplicación
+    let currentRegionKey = 'torax';
+    let currentProjectionIndex = 0;
+    let currentAgeGroup = 'adult'; // 'adult' | 'pediatric'
+
+    // Inicialización al cargar el documento
+    window.onload = function () {
+      renderRegionsSidebar();
+      selectRegion('torax');
+      initSimConsole();
+      initQuiz();
+    };
+
+    // Renderizado del menú lateral por categorías
+    function renderRegionsSidebar() {
+      const containers = {
+        torax_abdomen: document.getElementById('cat-torax-abdomen'),
+        superior: document.getElementById('cat-superior'),
+        inferior: document.getElementById('cat-inferior'),
+        axial: document.getElementById('cat-axial'),
+        craneo: document.getElementById('cat-craneo')
+      };
+
+      // Limpiar contenedores
+      for (let key in containers) {
+        containers[key].innerHTML = '';
+      }
+
+      for (let key in PROTOCOL_DATA) {
+        const region = PROTOCOL_DATA[key];
+        const btn = document.createElement('button');
+        btn.id = `btn-region-${key}`;
+        btn.onclick = () => selectRegion(key);
+        btn.className = `w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center justify-between border ${key === currentRegionKey ? 'bg-yellow-500 text-slate-950 border-yellow-400' : 'text-slate-400 hover:text-slate-200 bg-slate-950/40 border-transparent hover:border-slate-800'}`;
+
+        let icon = "🦴";
+        if (region.category === 'torax_abdomen') icon = "🫁";
+        if (region.category === 'superior') icon = "💪";
+        if (region.category === 'inferior') icon = "🦶";
+        if (region.category === 'axial') icon = "🧬";
+        if (region.category === 'craneo') icon = "💀";
+
+        btn.innerHTML = `
+                    <span class="flex items-center gap-2">
+                        <span>${icon}</span>
+                        <span>${region.name}</span>
+                    </span>
+                    <span class="text-[10px] opacity-60">${region.views.length} Proy.</span>
+                `;
+
+        containers[region.category].appendChild(btn);
+      }
+    }
+
+    // Selección de Región Anatómica
+    function selectRegion(key) {
+      if (currentRegionKey) {
+        const oldBtn = document.getElementById(`btn-region-${currentRegionKey}`);
+        if (oldBtn) {
+          oldBtn.className = "w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center justify-between border text-slate-400 hover:text-slate-200 bg-slate-950/40 border-transparent hover:border-slate-800";
+        }
+      }
+
+      currentRegionKey = key;
+      const newBtn = document.getElementById(`btn-region-${key}`);
+      if (newBtn) {
+        newBtn.className = "w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center justify-between border bg-yellow-500 text-slate-950 border-yellow-400";
+      }
+
+      currentProjectionIndex = 0;
+      renderProjectionTabs();
+      renderProtocolDetails();
+      updateSimTargetText();
+    }
+
+    // Generar pestañas de proyecciones para la región seleccionada
+    function renderProjectionTabs() {
+      const container = document.getElementById('projections-container');
+      container.innerHTML = '';
+
+      const region = PROTOCOL_DATA[currentRegionKey];
+      region.views.forEach((proj, idx) => {
+        const btn = document.createElement('button');
+        btn.onclick = () => selectProjection(idx);
+        btn.className = `py-1.5 px-3 rounded-lg text-xs font-extrabold tracking-wider uppercase transition-all duration-300 ${idx === currentProjectionIndex ? 'bg-white text-slate-950 shadow-md' : 'bg-slate-950 text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-slate-800'}`;
+        btn.innerText = proj.name;
+        container.appendChild(btn);
+      });
+    }
+
+    function selectProjection(idx) {
+      currentProjectionIndex = idx;
+      renderProjectionTabs();
+      renderProtocolDetails();
+      updateSimTargetText();
+    }
+
+    // Cambiar entre adulto y pediátrico
+    function toggleAgeGroup(group) {
+      currentAgeGroup = group;
+
+      const btnAdult = document.getElementById('btn-group-adult');
+      const btnPed = document.getElementById('btn-group-pediatric');
+      const badgeAdult = document.getElementById('adult-badge');
+      const badgePed = document.getElementById('ped-badge');
+
+      if (group === 'adult') {
+        btnAdult.className = "py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all bg-yellow-500 text-slate-950 shadow-md";
+        btnPed.className = "py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-slate-200";
+        badgeAdult.className = "text-xs px-2 py-0.5 rounded-full bg-slate-950/20 text-slate-950 font-extrabold";
+        badgePed.className = "text-xs px-2 py-0.5 rounded-full bg-slate-850 text-slate-400 font-extrabold";
+      } else {
+        btnPed.className = "py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all bg-yellow-500 text-slate-950 shadow-md";
+        btnAdult.className = "py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-slate-200";
+        badgePed.className = "text-xs px-2 py-0.5 rounded-full bg-slate-950/20 text-slate-950 font-extrabold";
+        badgeAdult.className = "text-xs px-2 py-0.5 rounded-full bg-slate-850 text-slate-400 font-extrabold";
+      }
+
+      renderProtocolDetails();
+      updateSimTargetText();
+    }
+
+    // Renderizado dinámico de la tarjeta de detalles
+    function renderProtocolDetails() {
+      const region = PROTOCOL_DATA[currentRegionKey];
+      const projection = region.views[currentProjectionIndex];
+      const details = currentAgeGroup === 'adult' ? projection.adult : projection.pediatric;
+
+      // Datos de texto principal
+      document.getElementById('current-region-name').innerText = region.name;
+      document.getElementById('current-category').innerText = region.category.replace('_', ' y ').toUpperCase();
+
+      // Factores técnicos
+      document.getElementById('info-kv').innerText = details.kv;
+      document.getElementById('info-mas').innerText = details.mas;
+      document.getElementById('info-grid').innerText = details.grid;
+      document.getElementById('info-dfi').innerText = details.dfi;
+      document.getElementById('info-chassis').innerText = details.chassis;
+
+      // Posicionamiento
+      document.getElementById('pos-patient').innerText = details.positioning.patient;
+      document.getElementById('pos-part').innerText = details.positioning.part;
+      document.getElementById('pos-cr').innerText = details.positioning.cr;
+
+      // Advertencia ALARA o pediátrica adaptada
+      const warningTitle = document.getElementById('warning-title');
+      const warningText = document.getElementById('warning-text');
+      const warningBox = document.getElementById('special-warning-box');
+
+      if (currentAgeGroup === 'pediatric') {
+        warningBox.className = "bg-rose-950/30 border border-rose-800/50 p-4 rounded-xl text-xs text-rose-200 flex gap-3";
+        warningTitle.innerText = "⚠️ Regla Pediátrica Fundamental";
+        warningText.innerText = "¡La rejilla (Bucky) absorbe hasta un 60% más de radiación primaria! No uses Bucky para espesores < 10-12 cm en niños. Optimiza colimación al área anatómica estricta.";
+      } else {
+        warningBox.className = "bg-sky-950/30 border border-sky-800/50 p-4 rounded-xl text-xs text-sky-200 flex gap-3";
+        warningTitle.innerText = "💡 Recomendación Técnica";
+        warningText.innerText = "Usa respiración suspendida al final de la inspiración para inmovilizar diafragma y evitar borrosidad cinética en el tórax.";
+      }
+
+      // Checklist de criterios de evaluación
+      const checklist = document.getElementById('criteria-checklist');
+      checklist.innerHTML = '';
+      details.criteria.forEach((crit, i) => {
+        const item = document.createElement('label');
+        item.className = "flex items-start gap-3 bg-slate-950 p-3 rounded-xl border border-slate-800/80 cursor-pointer hover:bg-slate-900 transition-colors";
+        item.innerHTML = `
+                    <input type="checkbox" class="mt-1 rounded border-slate-800 text-yellow-500 focus:ring-yellow-500/30 bg-slate-950">
+                    <span class="text-xs text-slate-300 leading-relaxed">${crit}</span>
+                `;
+        checklist.appendChild(item);
+      });
+    }
+
+    // Buscador y Filtrado de Regiones
+    function filterRegions() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      for (let key in PROTOCOL_DATA) {
+        const region = PROTOCOL_DATA[key];
+        const btn = document.getElementById(`btn-region-${key}`);
+        if (btn) {
+          if (region.name.toLowerCase().includes(query)) {
+            btn.classList.remove('hidden');
+          } else {
+            btn.classList.add('hidden');
+          }
+        }
+      }
+    }
+
+    // Cambiar entre pestañas principales de la app
+    function switchTab(tabId) {
+      const sections = ['guide', 'simulator', 'quiz'];
+      sections.forEach(sec => {
+        document.getElementById(`section-${sec}`).classList.add('hidden');
+        document.getElementById(`tab-btn-${sec}`).className = "px-4 py-2 text-xs md:text-sm font-semibold rounded-lg text-slate-400 hover:text-slate-200 transition-all duration-300";
+      });
+
+      document.getElementById(`section-${tabId}`).classList.remove('hidden');
+      if (tabId === 'guide') {
+        document.getElementById(`section-guide`).classList.add('grid');
+      } else if (tabId === 'simulator') {
+        document.getElementById(`section-simulator`).classList.add('grid');
+        syncSimulatorWithGuide();
+      } else if (tabId === 'quiz') {
+        document.getElementById(`section-quiz`).classList.remove('hidden');
+      }
+
+      document.getElementById(`tab-btn-${tabId}`).className = "px-4 py-2 text-xs md:text-sm font-semibold rounded-lg bg-yellow-500 text-slate-950 transition-all duration-300 shadow-md";
+    }
+
+
+    // ==========================================
+    // MÓDULO 2: SIMULADOR DE CONSOLA DE RAYOS X
+    // ==========================================
+    let simKv = 75;
+    let simMas = 10;
+    let simGrid = true;
+    let simFocus = "Foco Grueso (0.6)";
+    let simAge = "adult"; // 'adult' | 'pediatric'
+    let simIsPrepped = false;
+
+    function initSimConsole() {
+      updateSimDisplays();
+    }
+
+    // Sincronizar el simulador con la última guía seleccionada
+    function syncSimulatorWithGuide() {
+      const region = PROTOCOL_DATA[currentRegionKey];
+      const projection = region.views[currentProjectionIndex];
+      const guideDetails = currentAgeGroup === 'adult' ? projection.adult : projection.pediatric;
+
+      // Extraer números aproximados del string de kV y mAs de la guía
+      const kvMatch = guideDetails.kv.match(/\d+/);
+      const masMatch = guideDetails.mas.match(/\d+/);
+
+      simKv = kvMatch ? parseInt(kvMatch[0]) : 70;
+      simMas = masMatch ? parseFloat(masMatch[0]) : 10;
+      simGrid = guideDetails.grid.toLowerCase().includes('sí');
+      simAge = currentAgeGroup;
+
+      updateSimDisplays();
+      updateSimTargetText();
+      resetSimScreen();
+    }
+
+    function updateSimTargetText() {
+      const region = PROTOCOL_DATA[currentRegionKey];
+      const projection = region.views[currentProjectionIndex];
+      const text = `${region.name} (${projection.name}) en Paciente ${simAge === 'adult' ? 'Adulto 🧑' : 'Pediátrico 👶'}`;
+      const targetEl = document.getElementById('sim-target-text');
+      if (targetEl) targetEl.innerText = text;
+    }
+
+    function updateSimDisplays() {
+      document.getElementById('sim-display-kv').innerText = simKv;
+      document.getElementById('sim-display-mas').innerText = simMas.toFixed(1);
+
+      // Cálculo simulado del tiempo de exposición (mAs = mA * s). Asumimos mA constante de 200 mA para el cálculo
+      const calculatedTime = simMas / 200;
+      document.getElementById('sim-display-time').innerText = calculatedTime.toFixed(3);
+
+      // Actualizar botones de estado de la consola
+      const btnGrid = document.getElementById('sim-btn-grid');
+      btnGrid.innerText = simGrid ? "CON REJILLA (Grid)" : "SIN REJILLA (No Grid)";
+      btnGrid.className = `w-full py-2 px-3 rounded-lg font-bold text-xs transition-all ${simGrid ? 'bg-cyan-950 text-cyan-300 border border-cyan-800' : 'bg-slate-850 text-slate-400 border border-slate-800'}`;
+
+      const btnFocus = document.getElementById('sim-btn-focus');
+      btnFocus.innerText = simFocus;
+      btnFocus.className = `w-full py-2 px-3 rounded-lg font-bold text-xs transition-all ${simFocus.includes('Fino') ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-slate-850 text-slate-400 border border-slate-800'}`;
+
+      const btnAge = document.getElementById('sim-btn-age');
+      btnAge.innerText = simAge === 'adult' ? "ADULTO 🧑" : "PEDIÁTRICO 👶";
+      btnAge.className = `w-full py-2 px-3 rounded-lg font-bold text-xs transition-all ${simAge === 'adult' ? 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/30' : 'bg-pink-500/15 text-pink-400 border border-pink-500/30'}`;
+    }
+
+    function adjustSimFactor(factor, amount) {
+      if (factor === 'kv') {
+        simKv = Math.max(40, Math.min(150, simKv + amount));
+      } else if (factor === 'mas') {
+        simMas = Math.max(0.1, Math.min(200, simMas + amount));
+      }
+      updateSimDisplays();
+      resetSimScreen();
+    }
+
+    function toggleSimGrid() {
+      simGrid = !simGrid;
+      updateSimDisplays();
+      resetSimScreen();
+    }
+
+    function toggleSimFocus() {
+      simFocus = simFocus.includes('Grueso') ? "FOCO FINO (0.1)" : "FOCO GRUESO (0.6)";
+      updateSimDisplays();
+      resetSimScreen();
+    }
+
+    function toggleSimAge() {
+      simAge = simAge === 'adult' ? 'pediatric' : 'adult';
+      updateSimDisplays();
+      updateSimTargetText();
+      resetSimScreen();
+    }
+
+    function simTriggerPrep() {
+      simIsPrepped = true;
+      const btnPrep = document.getElementById('sim-btn-prep');
+      btnPrep.className = "py-3 px-5 rounded-xl font-extrabold text-xs tracking-wider uppercase transition-all duration-300 bg-yellow-500 text-slate-950 shadow-md shadow-yellow-500/20";
+
+      // Sonido de rotor de forma visual
+      const statusEl = document.getElementById('sim-report-status');
+      statusEl.innerText = "⏳ Ánodo girando a alta velocidad... Filamento calentado.";
+      statusEl.className = "text-sm font-bold text-yellow-400";
+    }
+
+    function resetSimScreen() {
+      simIsPrepped = false;
+      document.getElementById('sim-btn-prep').className = "py-3 px-5 rounded-xl font-extrabold text-xs tracking-wider uppercase transition-all duration-300 bg-slate-800 text-slate-300 hover:bg-slate-700";
+
+      const screen = document.getElementById('sim-screen');
+      screen.className = "aspect-[4/5] bg-black border-4 border-slate-950 rounded-2xl flex flex-col items-center justify-center p-4 relative overflow-hidden transition-all duration-500 shadow-inner";
+
+      document.getElementById('sim-screen-content').innerHTML = `
+                <span class="text-3xl">🦴</span>
+                <p class="text-xs text-slate-400 max-w-xs leading-relaxed">Factores modificados. Presiona Preparación y EXPOSICIÓN para realizar el disparo.</p>
+            `;
+      document.getElementById('sim-ei-box').classList.add('hidden');
+    }
+
+    function simTriggerExposure() {
+      if (!simIsPrepped) {
+        const statusEl = document.getElementById('sim-report-status');
+        statusEl.innerText = "❌ ERROR: Debe presionar Prep (Ánodo) antes del disparo de exposición.";
+        statusEl.className = "text-sm font-bold text-rose-500 animate-bounce";
+        return;
+      }
+
+      // Destello visual de rayos X en la pantalla
+      const screen = document.getElementById('sim-screen');
+      screen.classList.add('bg-white');
+
+      setTimeout(() => {
+        screen.classList.remove('bg-white');
+        processExposureResult();
+      }, 180);
+    }
+
+    // Motor de evaluación radiográfica
+    function processExposureResult() {
+      const region = PROTOCOL_DATA[currentRegionKey];
+      const projection = region.views[currentProjectionIndex];
+      const targetDetails = simAge === 'adult' ? projection.adult : projection.pediatric;
+
+      // Extraer valores diana de la base de datos
+      const targetKv = parseInt(targetDetails.kv.match(/\d+/)[0]);
+      const targetMas = parseFloat(targetDetails.mas.match(/\d+/)[0]);
+      const targetGrid = targetDetails.grid.toLowerCase().includes('sí');
+
+      // Calcular desviación respecto a la referencia
+      const kvDiff = simKv - targetKv;
+      const masDiff = simMas - targetMas;
+
+      let diagnosis = '';
+      let details = '';
+      let screenColorClass = '';
+      let screenEmoji = '';
+      let eiValue = Math.round(200 * (simKv / targetKv) * (simMas / targetMas));
+
+      // Lógica Pediátrica Especial (Penalización por rejilla innecesaria)
+      if (simAge === 'pediatric' && simGrid && !targetGrid) {
+        diagnosis = "🚨 DOSIS PEDIÁTRICA EXCESIVA (Uso innecesario de Bucky)";
+        details = "Has utilizado rejilla antidifusor en un protocolo pediátrico donde el espesor corporal es muy bajo. Esto obligó a aumentar los mAs artificialmente, elevando drásticamente la dosis de radiación del lactante. ¡Viola el principio ALARA!";
+        screenColorClass = "bg-rose-950/70 border-rose-500";
+        screenEmoji = "👶⚠️";
+        eiValue = Math.round(eiValue * 2.5); // Dosis extremadamente alta
+      }
+      // Sobreescritura si el kV es extremadamente bajo (subpenetración)
+      else if (kvDiff < -15) {
+        diagnosis = "⚪ IMAGEN SUBEXPUESTA (Silueta Ósea no Penetrada)";
+        details = "La energía de los fotones (kV) es demasiado baja para penetrar el espesor del tejido. La radiografía carece de densidad útil, mostrando una silueta 'tiza' extremadamente blanca y sin contraste útil.";
+        screenColorClass = "bg-slate-100/10 border-slate-500";
+        screenEmoji = "👻";
+      }
+      // Sobreexposición masiva (Quemada)
+      else if (kvDiff > 25 || simMas > (targetMas * 2.5)) {
+        diagnosis = "⚫ IMAGEN SOBREEXPUESTA (Imagen Saturada / Quemada)";
+        details = "Has irradiado la placa con un exceso masivo de radiación o energía. La imagen digital está saturada (quemada), perdiendo por completo los bordes óseos delicados y el contorno de tejidos blandos.";
+        screenColorClass = "bg-slate-900 border-slate-900";
+        screenEmoji = "🔥";
+      }
+      // Balance Óptimo (Excelente)
+      else if (Math.abs(kvDiff) <= 8 && Math.abs(masDiff) <= (targetMas * 0.4)) {
+        diagnosis = "❇️ ¡EXPOSICIÓN EXCELENTE! (Calidad Diagnóstica Óptima)";
+        details = "Has balanceado perfectamente el kV (contraste de escala corta) y los mAs (densidad óptica adecuada). Se aprecian de forma exquisita las trabéculas óseas internas y el tejido blando circundante con una dosis mínima.";
+        screenColorClass = "bg-cyan-950/30 border-cyan-500";
+        screenEmoji = "✔️💀";
+      }
+      // Desequilibrio menor por ruido de fotones (Poco mAs)
+      else if (masDiff < -(targetMas * 0.5)) {
+        diagnosis = "⚠️ RUIDO CUÁNTICO (Inanición de Fotones)";
+        details = "Aunque la penetración (kV) fue aceptable, la cantidad de fotones por segundo (mAs) fue muy baja. La imagen digital presenta un granulado severo (ruido cuántico o moteado) que dificulta la lectura fina.";
+        screenColorClass = "bg-amber-950/20 border-amber-500";
+        screenEmoji = "📺";
+      }
+      // Desequilibrio leve (Tolerable)
+      else {
+        diagnosis = "🟨 CALIDAD SUB-ÓPTIMA (Ajustar Factores)";
+        details = `La placa es diagnóstica pero se puede mejorar. Estás desviado de los factores ideales recomendados (kV ideal: ${targetKv}, mAs ideal: ${targetMas}). Recuerda cuidar la dosis en el paciente.`;
+        screenColorClass = "bg-slate-800 border-slate-700";
+        screenEmoji = "📉";
+      }
+
+      // Aplicar cambios en la interfaz del monitor
+      const screen = document.getElementById('sim-screen');
+      screen.className = `aspect-[4/5] border-4 rounded-2xl flex flex-col items-center justify-center p-4 relative overflow-hidden transition-all duration-500 shadow-inner ${screenColorClass}`;
+
+      document.getElementById('sim-screen-content').innerHTML = `
+                <span class="text-4xl animate-bounce">${screenEmoji}</span>
+                <h4 class="text-xs font-extrabold uppercase mt-4 text-white">${region.name}</h4>
+                <p class="text-[10px] text-slate-300 font-mono-tech mt-1">${projection.name}</p>
+                <div class="mt-4 text-[9px] bg-slate-950/80 px-2 py-1 rounded border border-slate-800 text-slate-400">
+                    Factores: ${simKv} kV | ${simMas} mAs | ${simGrid ? "Grid" : "No Grid"}
+                </div>
+            `;
+
+      // Mostrar el Índice de Exposición
+      const eiBox = document.getElementById('sim-ei-box');
+      const eiVal = document.getElementById('sim-ei-value');
+      eiBox.classList.remove('hidden');
+      eiVal.innerText = eiValue;
+      if (eiValue < 100) eiVal.className = "text-amber-400 font-bold";
+      else if (eiValue > 350) eiVal.className = "text-rose-500 font-bold";
+      else eiVal.className = "text-emerald-400 font-bold";
+
+      // Mostrar el Reporte escrito
+      document.getElementById('sim-report-status').innerHTML = diagnosis;
+      document.getElementById('sim-report-status').className = `text-sm font-bold ${screenColorClass.includes('cyan') ? 'text-emerald-400' : screenColorClass.includes('rose') ? 'text-rose-400' : 'text-amber-400'}`;
+      document.getElementById('sim-report-details').innerText = details;
+
+      // Reiniciar estado de preparación
+      simIsPrepped = false;
+      document.getElementById('sim-btn-prep').className = "py-3 px-5 rounded-xl font-extrabold text-xs tracking-wider uppercase transition-all duration-300 bg-slate-800 text-slate-300 hover:bg-slate-700";
+    }
+
+
+    // ==========================================
+    // MÓDULO 3: QUIZ DE AUTOEVALUACIÓN
+    // ==========================================
+    const QUIZ_QUESTIONS = [
+      {
+        q: "¿Por qué se prefiere no usar rejilla (Bucky) en pacientes pediátricos en radiografías de tórax o extremidades delgadas?",
+        options: [
+          "Porque las rejillas reducen el contraste del hueso infantil.",
+          "Para cumplir con el principio ALARA, ya que el uso de Bucky requiere duplicar o triplicar los mAs, aumentando drásticamente la dosis.",
+          "Porque las rejillas dañan los sensores digitales de adquisición directa.",
+          "Para evitar que la rejilla salga proyectada en la radiografía final."
+        ],
+        answer: 1,
+        feedback: "Correcto. El uso de rejilla en niños con partes delgadas no aporta beneficio en remover radiación dispersa y en su lugar exige aumentar considerablemente el mAs, lo cual atenta contra la radioprotección."
+      },
+      {
+        q: "Para una radiografía de pelvis AP de un adulto con sospecha de displasia o fractura, ¿cuál es el posicionamiento recomendado para las extremidades inferiores?",
+        options: [
+          "Rotación externa de 45° de ambos pies.",
+          "Mantener las piernas cruzadas para estabilizar la cadera.",
+          "Rotación interna de 15° a 20° para situar los cuellos femorales en paralelo al chasis.",
+          "Flexión máxima de rodillas en posición de rana (proyección de Löwenstein)."
+        ],
+        answer: 2,
+        feedback: "Correcto. La rotación interna de 15° a 20° contrarresta la anteversión natural del cuello femoral y nos permite ver el cuello de perfil y con mínima magnificación."
+      },
+      {
+        q: "En una radiografía de Tórax PA de calidad excelente, ¿cuántos arcos costales posteriores se deben visualizar como mínimo por encima del diafragma?",
+        options: [
+          "5 a 6 arcos costales posteriores.",
+          "Al menos 10 arcos costales posteriores.",
+          "Exactamente 12 arcos costales anteriores.",
+          "No importa el número, solo que no esté rotada."
+        ],
+        answer: 1,
+        feedback: "Correcto. Una de las bases de una inspiración adecuada desplaza el diafragma hacia abajo para despejar el campo pulmonar y se demuestra visualizando mínimo 10 costillas posteriores."
+      },
+      {
+        q: "Si vas a realizar una radiografía de Cavidades Perinasales (CNP), ¿cuál es el motivo principal de tomarla SIEMPRE con el paciente en bipedestación?",
+        options: [
+          "Disminuir la dosis de radiación dispersa.",
+          "Es un requisito exclusivo de la técnica de Waters para no magnificar.",
+          "Poder demostrar de manera fidedigna los niveles hidroaéreos en los senos maxilares y frontales.",
+          "Facilitar que el niño mantenga el mentón extendido."
+        ],
+        answer: 2,
+        feedback: "Correcto. Si el paciente se recuesta, el fluido acumulado por sinusitis se distribuye homogéneamente en la cavidad, perdiendo el nivel hidroaéreo característico en la imagen diagnóstica."
+      },
+      {
+        q: "¿Qué angulación del rayo central se utiliza típicamente para una proyección AP Axial de Clavícula en un paciente adulto?",
+        options: [
+          "Rayo perpendicular absoluto.",
+          "15° a 30° de angulación cefálica.",
+          "10° a 15° de angulación caudal.",
+          "45° lateral oblicuo."
+        ],
+        answer: 1,
+        feedback: "Correcto. La angulación cefálica proyecta la clavícula hacia arriba, despejándola de la superposición de las costillas torácicas basales y la escápula."
+      }
+    ];
+
+    let currentQuizIndex = 0;
+    let selectedOptionIdx = null;
+
+    function initQuiz() {
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      selectedOptionIdx = null;
+      document.getElementById('quiz-feedback-box').classList.add('hidden');
+      document.getElementById('quiz-warning').classList.add('hidden');
+
+      const btnAction = document.getElementById('quiz-btn-action');
+      btnAction.innerText = "Verificar Respuesta 🔎";
+      btnAction.className = "py-3 px-6 rounded-xl font-bold text-sm bg-yellow-500 text-slate-950 hover:bg-yellow-400 transition-all shadow-md cursor-pointer";
+
+      const qData = QUIZ_QUESTIONS[currentQuizIndex];
+
+      // Actualizar textos y barra
+      document.getElementById('quiz-progress-text').innerText = `Pregunta ${currentQuizIndex + 1} de ${QUIZ_QUESTIONS.length}`;
+      const percentage = ((currentQuizIndex + 1) / QUIZ_QUESTIONS.length) * 100;
+      document.getElementById('quiz-progress-bar').style.width = `${percentage}%`;
+      document.getElementById('quiz-question').innerText = qData.q;
+
+      // Render de opciones
+      const optionsContainer = document.getElementById('quiz-options-container');
+      optionsContainer.innerHTML = '';
+
+      qData.options.forEach((opt, idx) => {
+        const button = document.createElement('button');
+        button.onclick = () => selectQuizOption(idx);
+        button.id = `quiz-opt-${idx}`;
+        button.className = "w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-900 text-slate-300 text-xs md:text-sm font-medium transition-all duration-200 flex items-center justify-between";
+        button.innerHTML = `
+                    <span>${opt}</span>
+                    <span class="h-5 w-5 rounded-full border border-slate-700 flex items-center justify-center text-[10px] text-slate-500 font-bold font-mono-tech">${String.fromCharCode(65 + idx)}</span>
+                `;
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function selectQuizOption(idx) {
+      if (selectedOptionIdx !== null) return; // Ya se verificó la respuesta
+
+      // Limpiar selección previa visualmente
+      for (let i = 0; i < 4; i++) {
+        const optEl = document.getElementById(`quiz-opt-${i}`);
+        if (optEl) {
+          optEl.className = "w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-900 text-slate-300 text-xs md:text-sm font-medium transition-all duration-200 flex items-center justify-between";
+        }
+      }
+
+      selectedOptionIdx = idx;
+      const chosenEl = document.getElementById(`quiz-opt-${idx}`);
+      chosenEl.className = "w-full text-left p-4 rounded-xl border-2 border-yellow-500 bg-yellow-500/10 text-yellow-200 text-xs md:text-sm font-bold transition-all duration-200 flex items-center justify-between shadow-lg shadow-yellow-500/5";
+      document.getElementById('quiz-warning').classList.add('hidden');
+    }
+
+    function nextQuizQuestion() {
+      const qData = QUIZ_QUESTIONS[currentQuizIndex];
+      const feedbackBox = document.getElementById('quiz-feedback-box');
+      const feedbackTitle = document.getElementById('quiz-feedback-title');
+      const feedbackText = document.getElementById('quiz-feedback-text');
+      const btnAction = document.getElementById('quiz-btn-action');
+      const warningEl = document.getElementById('quiz-warning');
+
+      if (selectedOptionIdx === null) {
+        warningEl.classList.remove('hidden');
+        setTimeout(() => {
+          warningEl.classList.add('hidden');
+        }, 3500);
+        return;
+      }
+
+      // Si se presiona para verificar
+      if (feedbackBox.classList.contains('hidden')) {
+        feedbackBox.classList.remove('hidden');
+
+        const isCorrect = selectedOptionIdx === qData.answer;
+
+        // Pintar la correcta e incorrecta
+        const correctEl = document.getElementById(`quiz-opt-${qData.answer}`);
+        correctEl.className = "w-full text-left p-4 rounded-xl border-2 border-emerald-500 bg-emerald-500/15 text-emerald-200 text-xs md:text-sm font-bold flex items-center justify-between";
+
+        if (!isCorrect) {
+          const incorrectEl = document.getElementById(`quiz-opt-${selectedOptionIdx}`);
+          incorrectEl.className = "w-full text-left p-4 rounded-xl border-2 border-rose-500 bg-rose-500/15 text-rose-200 text-xs md:text-sm font-bold flex items-center justify-between";
+
+          feedbackTitle.innerText = "❌ RESPUESTA INCORRECTA";
+          feedbackBox.className = "bg-rose-950/20 border border-rose-800/60 p-4 rounded-2xl flex flex-col gap-1";
+        } else {
+          feedbackTitle.innerText = "✨ ¡RESPUESTA CORRECTA!";
+          feedbackBox.className = "bg-emerald-950/20 border border-emerald-800/60 p-4 rounded-2xl flex flex-col gap-1";
+        }
+
+        feedbackText.innerText = qData.feedback;
+
+        if (currentQuizIndex === QUIZ_QUESTIONS.length - 1) {
+          btnAction.innerText = "Reiniciar Cuestionario 🔄";
+        } else {
+          btnAction.innerText = "Siguiente Pregunta ➡️";
+        }
+        return;
+      }
+
+      // Si ya se mostró la retroalimentación y se presiona 'Siguiente' o 'Reiniciar'
+      if (currentQuizIndex === QUIZ_QUESTIONS.length - 1) {
+        currentQuizIndex = 0;
+      } else {
+        currentQuizIndex++;
+      }
+      renderQuizQuestion();
+    }
+  </script>
+</body>
+
+</html>
