@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RadSim TM - Simulador Clínico ACR / ESUR & Bontrager 10ª Ed.</title>
+    <script>
+        // Tema inicial: preferencia guardada o, si no existe, la del sistema operativo
+        (function () {
+            let saved = null;
+            try { saved = localStorage.getItem('radsim-theme'); } catch (e) {}
+            const prefersDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : true;
+            const useDark = saved ? saved === 'dark' : prefersDark;
+            document.documentElement.classList.toggle('dark', useDark);
+        })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
@@ -112,6 +122,92 @@
             background-image: radial-gradient(rgba(255,255,255,0.22) 1px, transparent 0);
             background-size: 4px 4px;
         }
+
+        /* ================= ESQUEMAS DE POSICIONAMIENTO (colores por tema) ================= */
+        :root {
+            --dg-bg: #f8fafc;
+            --dg-grid: #e2e8f0;
+            --dg-body: #cbd5e1;
+            --dg-body-stroke: #64748b;
+            --dg-table: #94a3b8;
+            --dg-ink: #0f172a;
+            --dg-muted: #475569;
+            --dg-hi: #f59e0b;
+            --dg-cr: #0891b2;
+            --dg-user: #e11d48;
+            --dg-ir: #059669;
+            --dg-tube: #334155;
+        }
+        html.dark {
+            --dg-bg: #060d1c;
+            --dg-grid: #111c38;
+            --dg-body: #1e2f58;
+            --dg-body-stroke: #64748b;
+            --dg-table: #334155;
+            --dg-ink: #e2e8f0;
+            --dg-muted: #94a3b8;
+            --dg-hi: #ffb300;
+            --dg-cr: #00e5ff;
+            --dg-user: #fb7185;
+            --dg-ir: #34d399;
+            --dg-tube: #94a3b8;
+        }
+
+        /* ================= MODO CLARO =================
+           La interfaz se escribió con utilidades oscuras; en modo claro se reasignan aquí.
+           Las zonas .xray-dark (mosaico radiográfico y monitor PACS) se mantienen oscuras como un negatoscopio. */
+        html:not(.dark) body { background-color: #eef2f7; color: #0f172a; }
+        html:not(.dark) .bg-rad-950:not(.xray-dark *),
+        html:not(.dark) .bg-rad-950\/70:not(.xray-dark *),
+        html:not(.dark) .bg-rad-950\/80:not(.xray-dark *),
+        html:not(.dark) .bg-slate-950\/90:not(.xray-dark *),
+        html:not(.dark) .bg-slate-900:not(.xray-dark *),
+        html:not(.dark) .bg-slate-900\/90:not(.xray-dark *) { background-color: #f8fafc; }
+        html:not(.dark) .bg-rad-900:not(.xray-dark *),
+        html:not(.dark) .bg-rad-900\/95:not(.xray-dark *) { background-color: #ffffff; }
+        html:not(.dark) .bg-slate-800:not(.xray-dark *) { background-color: #e2e8f0; }
+        html:not(.dark) .hover\:bg-slate-700:hover:not(.xray-dark *) { background-color: #cbd5e1; }
+        html:not(.dark) .bg-cyan-950:not(.xray-dark *),
+        html:not(.dark) .bg-cyan-950\/80:not(.xray-dark *),
+        html:not(.dark) .bg-cyan-950\/25:not(.xray-dark *) { background-color: #ecfeff; }
+        html:not(.dark) .bg-emerald-950\/20 { background-color: #ecfdf5; }
+        html:not(.dark) .bg-rose-950\/25 { background-color: #fff1f2; }
+
+        html:not(.dark) .text-white:not(.xray-dark *),
+        html:not(.dark) .hover\:text-white:hover:not(.xray-dark *) { color: #0f172a; }
+        html:not(.dark) .text-slate-200:not(.xray-dark *) { color: #1e293b; }
+        html:not(.dark) .text-slate-300:not(.xray-dark *) { color: #334155; }
+        html:not(.dark) .text-slate-400:not(.xray-dark *) { color: #475569; }
+        html:not(.dark) .text-cyan-200\/80:not(.xray-dark *),
+        html:not(.dark) .text-cyan-300:not(.xray-dark *),
+        html:not(.dark) .text-cyan-400:not(.xray-dark *) { color: #0e7490; }
+        html:not(.dark) .text-amber-200:not(.xray-dark *),
+        html:not(.dark) .text-amber-300:not(.xray-dark *),
+        html:not(.dark) .text-amber-400:not(.xray-dark *) { color: #b45309; }
+        html:not(.dark) .text-emerald-300:not(.xray-dark *),
+        html:not(.dark) .text-emerald-400:not(.xray-dark *) { color: #047857; }
+        html:not(.dark) .text-rose-300:not(.xray-dark *),
+        html:not(.dark) .text-rose-400:not(.xray-dark *) { color: #be123c; }
+        html:not(.dark) .text-purple-300:not(.xray-dark *),
+        html:not(.dark) .text-purple-300\/90:not(.xray-dark *),
+        html:not(.dark) .text-purple-400:not(.xray-dark *) { color: #7e22ce; }
+
+        html:not(.dark) .border-slate-700:not(.xray-dark *),
+        html:not(.dark) .border-slate-800:not(.xray-dark *),
+        html:not(.dark) .border-slate-800\/80:not(.xray-dark *),
+        html:not(.dark) .border-slate-800\/90:not(.xray-dark *) { border-color: #cbd5e1; }
+        html:not(.dark) .hover\:border-slate-600:hover,
+        html:not(.dark) .hover\:border-slate-700:hover { border-color: #94a3b8; }
+
+        html:not(.dark) .lcd-panel {
+            background: linear-gradient(180deg, #ffffff 0%, #f1f7fb 100%);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 0 1px rgba(8, 145, 178, 0.4);
+        }
+        html:not(.dark) .custom-scroll::-webkit-scrollbar-track { background: #e2e8f0; }
+        html:not(.dark) .custom-scroll::-webkit-scrollbar-thumb { background: #94a3b8; }
+        html:not(.dark) .shadow-xl, html:not(.dark) .shadow-2xl { --tw-shadow-color: rgba(15, 23, 42, 0.08); }
+        /* Texto oscuro sobre botones sólidos se mantiene */
+        html:not(.dark) .text-slate-950 { color: #020617; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-cyan-500 selection:text-black">
@@ -135,18 +231,25 @@
                 </div>
             </div>
 
-            <!-- Selector de Modo (Estudio vs Práctica/Evaluación) -->
-            <div class="flex items-center gap-3">
-                <div class="bg-rad-950 p-1 rounded-xl border border-slate-800 flex items-center text-xs font-medium">
-                    <button id="btnModeStudy" onclick="setAppMode('study')" class="px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-semibold transition-all flex items-center gap-1.5">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                        Modo Estudio (Asistido ACR/ESUR)
-                    </button>
-                    <button id="btnModeQuiz" onclick="setAppMode('quiz')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5">
+            <!-- Pestañas de Modo (1: Práctica/Evaluación por defecto • 2: Docente/Estudio) + Selector de Tema -->
+            <div class="flex flex-wrap items-center gap-3">
+                <div role="tablist" aria-label="Modo de la aplicación" class="bg-rad-950 p-1 rounded-xl border border-slate-800 flex items-center text-xs font-medium">
+                    <button id="btnModeQuiz" role="tab" aria-selected="true" onclick="setAppMode('quiz')" class="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-semibold transition-all flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Modo Práctica Clínica (Evaluación)
+                        1 · Modo Práctica / Evaluación
+                    </button>
+                    <button id="btnModeStudy" role="tab" aria-selected="false" onclick="setAppMode('study')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        2 · Modo Docente / Estudio
                     </button>
                 </div>
+
+                <!-- Interruptor Modo Claro / Oscuro -->
+                <button id="themeToggleBtn" onclick="toggleTheme()" type="button" title="Cambiar entre modo claro y oscuro" aria-label="Cambiar entre modo claro y oscuro" class="h-9 px-3 rounded-xl border border-slate-800 bg-rad-950 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-2 transition">
+                    <svg id="themeIconSun" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"></path></svg>
+                    <svg id="themeIconMoon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
+                    <span id="themeToggleLabel">Modo Claro</span>
+                </button>
             </div>
         </div>
 
@@ -172,7 +275,7 @@
                 <button onclick="goToStep(3)" id="stepBtn3" class="flex items-center gap-2.5 px-3 py-2 rounded-xl border text-left transition-all bg-rad-950 border-slate-800 text-slate-400 hover:text-white">
                     <span class="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 font-mono font-bold text-xs flex items-center justify-center shrink-0">3</span>
                     <div class="overflow-hidden">
-                        <div class="text-[10px] font-mono uppercase text-slate-400">Paso 3</div>
+                        <div class="text-[10px] font-mono uppercase text-slate-400" id="step3Kicker">Paso 3</div>
                         <div class="text-xs font-bold truncate" id="step3Summary">Factores & Geometría</div>
                     </div>
                 </button>
@@ -181,7 +284,7 @@
                     <span class="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 font-mono font-bold text-xs flex items-center justify-center shrink-0">4</span>
                     <div class="overflow-hidden">
                         <div class="text-[10px] font-mono uppercase text-slate-400">Paso 4</div>
-                        <div class="text-xs font-bold truncate">Disparo y Evaluación</div>
+                        <div class="text-xs font-bold truncate" id="step4Title">Disparo y Evaluación</div>
                     </div>
                 </button>
             </div>
@@ -206,7 +309,7 @@
                 </div>
 
                 <!-- Mosaico Interactivo SVG (Fiel a la imagen de referencia de placas radiográficas) -->
-                <div class="relative bg-black/85 rounded-xl border border-slate-800/90 p-3 flex justify-center items-center overflow-hidden">
+                <div class="xray-dark relative bg-black/85 rounded-xl border border-slate-800/90 p-3 flex justify-center items-center overflow-hidden">
                     <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#00e5ff 1px, transparent 1px); background-size: 16px 16px;"></div>
 
                     <svg id="bodyMosaicSvg" viewBox="0 0 320 670" class="w-full max-w-[275px] h-auto select-none">
@@ -373,6 +476,16 @@
                         </div>
                     </div>
 
+                    <!-- Esquema gráfico de posicionamiento (tubo, rayo central, paciente y receptor) -->
+                    <div class="mb-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <h5 class="text-xs font-bold uppercase text-cyan-400">Esquema de Posicionamiento</h5>
+                            <span id="step1DiagramPoseLabel" class="text-[11px] font-mono text-slate-400"></span>
+                        </div>
+                        <div id="step1PositioningDiagram" class="max-w-[560px] mx-auto rounded-xl border border-slate-800 overflow-hidden"></div>
+                        <p id="step1DiagramCaption" class="text-[11px] text-slate-400 mt-1.5"></p>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <h5 class="text-xs font-bold uppercase text-cyan-400 mb-2">Posicionamiento del Paciente y Estructura</h5>
@@ -498,10 +611,10 @@
                 <!-- Cabecera Consola -->
                 <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-slate-800">
                     <div>
-                        <span class="text-xs font-mono uppercase text-cyan-400">Paso 3 de 4 • Generador de Alta Frecuencia & Geometría</span>
+                        <span id="step3PanelKicker" class="text-xs font-mono uppercase text-cyan-400">Paso 3 de 4 • Generador de Alta Frecuencia & Geometría</span>
                         <h2 id="consoleProjHeader" class="text-lg md:text-xl font-bold text-white mt-0.5">Configuración Técnica: Tórax PA</h2>
                     </div>
-                    <div class="flex flex-wrap items-center gap-2">
+                    <div id="consoleHeaderTools" class="flex flex-wrap items-center gap-2">
                         <span id="focalSpotBadge" class="text-xs font-mono px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyan-300">
                             Foco Grueso (1.2 mm)
                         </span>
@@ -511,6 +624,8 @@
                     </div>
                 </div>
 
+                <!-- CONSOLA EDITABLE (solo Modo Práctica / Evaluación) -->
+                <div id="practiceConsole">
                 <!-- Aviso de Modo Práctica -->
                 <div id="quizConsoleNotice" class="hidden mb-5 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/40 text-xs text-amber-200 flex items-center gap-3">
                     <svg class="w-5 h-5 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
@@ -562,6 +677,10 @@
                             </div>
                         </div>
                         <input id="masSliderControl" type="range" min="0" max="28" step="1" value="6" oninput="onMasSliderChange(this.value)" class="w-full accent-amber-400 cursor-pointer h-1.5 bg-slate-800 rounded-lg mb-2">
+                        <div class="flex items-center gap-2 mb-2">
+                            <label for="masExactInput" class="text-[10px] font-mono uppercase text-slate-400 shrink-0">mAs exacto</label>
+                            <input id="masExactInput" type="number" min="0.1" max="800" step="0.1" value="2.0" onchange="setManualMasExact(this.value)" onkeydown="if(event.key==='Enter'){setManualMasExact(this.value)}" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-center font-mono text-sm font-bold text-amber-300">
+                        </div>
                         <div id="masFormulaHint" class="text-[11px] font-mono text-slate-400 border-t border-slate-800/80 pt-1.5">
                             250 mA × 0.008 s = 2.00 mAs
                         </div>
@@ -687,6 +806,66 @@
                         <span>REALIZAR DISPARO DE RAYOS X Y EVALUAR IMAGEN (PASO 4)</span>
                     </button>
                 </div>
+                </div>
+                <!-- FIN CONSOLA EDITABLE -->
+
+                <!-- FICHA TÉCNICA DOCENTE (solo Modo Docente / Estudio): parámetros óptimos directos -->
+                <div id="teacherSheet" class="hidden space-y-5">
+                    <div class="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-xs text-slate-300 flex items-start gap-3">
+                        <svg class="w-5 h-5 text-cyan-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        <div>
+                            <strong class="text-cyan-300">MODO DOCENTE / ESTUDIO:</strong> Ficha de consulta con los parámetros óptimos para el paciente configurado en el Paso 2 (equipo DR, guías ACR / ESUR y posicionamiento Bontrager 10ª Ed.). Para practicar y ser evaluado, cambia a la pestaña <strong>1 · Modo Práctica / Evaluación</strong>.
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+                        <div>
+                            <h3 class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-2.5">A. Factores de Exposición y Geometría Óptimos</h3>
+                            <div id="teacherParamsGrid" class="grid grid-cols-2 gap-2.5"></div>
+                        </div>
+                        <div>
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+                                <h3 class="text-xs font-mono uppercase tracking-wider text-slate-400">B. Esquema de Posicionamiento</h3>
+                                <span id="teacherDiagramPoseLabel" class="text-[11px] font-mono text-slate-400"></span>
+                            </div>
+                            <div id="teacherPositioningDiagram" class="rounded-xl border border-slate-800 overflow-hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-950/90 border border-slate-800 rounded-xl p-4">
+                            <h4 class="text-xs font-bold uppercase text-cyan-400 mb-2">C. Criterios de Posicionamiento</h4>
+                            <ul id="teacherPositioningList" class="text-xs text-slate-300 space-y-1.5 list-disc pl-4 leading-relaxed"></ul>
+                        </div>
+                        <div class="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-2 text-xs">
+                            <h4 class="text-xs font-bold uppercase text-amber-400 mb-1">D. Centraje, Receptor y Recomendaciones al Paciente</h4>
+                            <p><strong class="text-amber-300">Rayo Central:</strong> <span id="teacherCrCenter" class="text-slate-300"></span></p>
+                            <p><strong class="text-cyan-300">Receptor (DR):</strong> <span id="teacherIrSize" class="text-slate-300"></span></p>
+                            <p><strong class="text-emerald-300">Respiración / Instrucción al paciente:</strong> <span id="teacherRespiration" class="text-slate-300"></span></p>
+                            <p class="pt-2 border-t border-slate-800"><strong class="text-purple-300">Nota ACR / ESUR del grupo etario:</strong> <span id="teacherAgeNote" class="text-slate-300"></span></p>
+                            <p id="teacherBuckyNote" class="text-slate-300"></p>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-xs text-slate-300 leading-relaxed">
+                        <strong class="text-emerald-300">Recomendación clínica (Bontrager):</strong> <span id="teacherTips"></span>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="goToStep(2)" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"></path></svg>
+                            Volver al Paso 2 (Paciente)
+                        </button>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="goToStep(1)" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition">
+                                Consultar otra proyección (Paso 1)
+                            </button>
+                            <button onclick="setAppMode('quiz'); goToStep(3);" class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs transition">
+                                Practicar esta proyección (Modo Práctica)
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -709,7 +888,7 @@
                         </div>
 
                         <!-- Lienzo de previsualización radiográfica con efectos de sub/sobreexposición, scatter y distorsión -->
-                        <div id="simulatedXrayViewport" class="relative w-full h-[310px] bg-black rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden transition-all duration-300">
+                        <div id="simulatedXrayViewport" class="xray-dark relative w-full h-[310px] bg-black rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden transition-all duration-300">
                             <div id="quantumNoiseLayer" class="absolute inset-0 quantum-mottle opacity-0 pointer-events-none transition-opacity"></div>
                             <div id="scatterFogLayer" class="absolute inset-0 bg-slate-400 opacity-0 pointer-events-none transition-opacity"></div>
 
@@ -735,6 +914,18 @@
                         </div>
 
                         <p id="viewportVisualCaption" class="text-xs text-center text-slate-400 mt-3 leading-relaxed"></p>
+
+                        <!-- Esquema geométrico: RC correcto vs RC usado por el estudiante -->
+                        <div class="w-full mt-4 pt-3 border-t border-slate-800">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2 text-[11px] font-mono">
+                                <span class="uppercase text-slate-400">Geometría del disparo</span>
+                                <span class="flex items-center gap-3">
+                                    <span class="flex items-center gap-1"><span class="inline-block w-4 h-0.5" style="background: var(--dg-cr)"></span><span class="text-slate-300">RC correcto</span></span>
+                                    <span class="flex items-center gap-1"><span class="inline-block w-4 h-0.5" style="background: var(--dg-user)"></span><span class="text-slate-300">Tu RC</span></span>
+                                </span>
+                            </div>
+                            <div id="evalPositioningDiagram" class="max-w-[460px] mx-auto rounded-xl border border-slate-800 overflow-hidden"></div>
+                        </div>
                     </div>
 
                     <!-- TABLA DE DIAGNÓSTICO PARÁMETRO POR PARÁMETRO Y CÓMO AFECTÓ A LA IMAGEN (7 cols) -->
@@ -1480,10 +1671,10 @@
                         type: 'Especial',
                         dfp: '100 cm (40")',
                         dfpCmRec: 100,
-                        angle: '15° Cefálico (hacia el codo)',
+                        angle: '10° a 15° Cefálico (proximal, hacia el codo)',
                         angleDegRec: 15,
                         angleDegMin: 10,
-                        angleDegMax: 20,
+                        angleDegMax: 15,
                         angleDirRec: 'cefalico',
                         bucky: false,
                         pediatricBuckyThresholdKg: 999,
@@ -1496,7 +1687,7 @@
                         respiration: 'No requiere apnea.',
                         positioning: [
                             'Muñeca en pronación con desviación cubital máxima.',
-                            'Angular el Rayo Central 10° a 20° Cefálico (hacia el codo) para proyectar el escafoides perpendicular a su eje largo sin auto-superposición.'
+                            'Angular el Rayo Central 10° a 15° Cefálico (proximal, hacia el codo) para proyectar el escafoides perpendicular a su eje largo sin auto-superposición.'
                         ],
                         tips: 'Si no se angula 15° hacia el codo, el polo proximal y distal del escafoides se superponen ocultando fracturas de cintura.'
                     }
@@ -1825,9 +2016,305 @@
         };
 
         // ESTADO GLOBAL DEL SIMULADOR PASO A PASO
+        // =================================================================================
+        // TEXTOS DE ANGULACIÓN DEL RAYO CENTRAL
+        // =================================================================================
+        function formatAngle(deg, dir) {
+            if (!deg || dir === 'perpendicular') return '0° Perpendicular';
+            return `${deg}° ${dir === 'caudal' ? 'Caudal' : 'Cefálico'}`;
+        }
+
+        function formatRecAngle(rec) {
+            if (rec.angleDir === 'perpendicular') {
+                return rec.angleDegMax > 0 ? `0° Perpendicular (tolerancia ≤ ${rec.angleDegMax}°)` : '0° Perpendicular';
+            }
+            const range = rec.angleDegMin === rec.angleDegMax ? `${rec.angleDeg}°` : `${rec.angleDegMin}° a ${rec.angleDegMax}°`;
+            return `${range} ${rec.angleDir === 'caudal' ? 'Caudal' : 'Cefálico'}`;
+        }
+
+        function formatSeconds(s) {
+            return Number(s.toFixed(4)).toString();
+        }
+
+        // =================================================================================
+        // ESQUEMAS SVG DE POSICIONAMIENTO (tubo, rayo central, paciente, receptor y Bucky)
+        // pose: 'supine' (mesa, haz vertical) | 'erect' (Bucky mural, haz horizontal) | 'table' (extremidad sobre la mesa)
+        // focus: posición de la estructura a lo largo del eje cabeza→pies (o proximal→distal en 'table'), de 0 a 1
+        // =================================================================================
+        const REGION_FOCUS = {
+            craneo: 0.05, torax: 0.24, columna: 0.3, hombro_humero: 0.18, antebrazo_codo: 0.16,
+            mano_muneca: 0.86, abdomen_pelvis: 0.45, cadera_femur: 0.53, rodilla: 0.72, pierna: 0.83, pie_tobillo: 0.95
+        };
+
+        const PROJECTION_POSES = {
+            craneo_ap_axial_towne:       { pose: 'supine', focus: 0.04, label: 'Decúbito supino • AP axial (occipucio contra el RI)' },
+            craneo_pa_caldwell:          { pose: 'erect',  focus: 0.06, label: 'Erecto o prono • PA (frente y nariz contra el Bucky)' },
+            craneo_lateral:              { pose: 'erect',  focus: 0.06, label: 'Erecto (o semiprono) • Cráneo en perfil verdadero' },
+            waters_spn:                  { pose: 'erect',  focus: 0.07, label: 'Erecto • PA con haz horizontal (niveles hidroaéreos)' },
+            torax_pa:                    { pose: 'erect',  focus: 0.24, label: 'Bipedestación • PA contra Bucky mural' },
+            torax_lateral:               { pose: 'erect',  focus: 0.24, label: 'Bipedestación • Lateral izquierdo contra el Bucky' },
+            torax_ap_portatil:           { pose: 'supine', focus: 0.2,  label: 'Supino / semierecto • AP portátil (RI directo)' },
+            parrilla_costal_ap:          { pose: 'erect',  focus: 0.26, label: 'Erecto (sobre diafragma: supino) • AP / PA' },
+            c_spine_ap_axial:            { pose: 'erect',  focus: 0.11, label: 'Erecto o supino • AP axial' },
+            c_spine_lateral:             { pose: 'erect',  focus: 0.11, label: 'Erecto • Lateral con hombros deprimidos' },
+            t_spine_ap:                  { pose: 'supine', focus: 0.26, label: 'Decúbito supino • AP (rodillas flexionadas)' },
+            l_spine_ap:                  { pose: 'supine', focus: 0.4,  label: 'Decúbito supino • AP (rodillas flexionadas)' },
+            l_spine_lateral:             { pose: 'supine', focus: 0.4,  label: 'Decúbito lateral • Columna paralela a la mesa' },
+            sacro_ap_axial:              { pose: 'supine', focus: 0.47, label: 'Decúbito supino • AP axial' },
+            hombro_ap_verdadera_grashey: { pose: 'erect',  focus: 0.18, label: 'Erecto • Oblicua posterior 35°–45° hacia el lado afectado' },
+            hombro_ap_rotacion:          { pose: 'erect',  focus: 0.18, label: 'Erecto • AP con rotación externa / interna' },
+            hombro_axial_falsa_neer:     { pose: 'erect',  focus: 0.18, label: 'Erecto • Oblicua anterior 45°–60° (Y escapular)' },
+            clavicula_ap_axial:          { pose: 'erect',  focus: 0.16, label: 'Erecto o supino • AP axial' },
+            humero_ap_lat:               { pose: 'erect',  focus: 0.25, label: 'Erecto • AP y lateral' },
+            codo_ap:                     { pose: 'table',  focus: 0.16, label: 'Sentado junto a la mesa • Codo extendido sobre el RI' },
+            codo_lateral:                { pose: 'table',  focus: 0.16, label: 'Sentado junto a la mesa • Codo flexionado 90°' },
+            codo_coyle:                  { pose: 'table',  focus: 0.16, label: 'Sentado junto a la mesa • Codo flexionado 90° (Coyle)' },
+            antebrazo_ap_lat:            { pose: 'table',  focus: 0.42, label: 'Sentado junto a la mesa • Antebrazo sobre el RI' },
+            mano_pa_oblicua:             { pose: 'table',  focus: 0.86, label: 'Sentado junto a la mesa • Mano en pronación sobre el RI' },
+            escafoides_stecher:          { pose: 'table',  focus: 0.72, label: 'Sentado junto a la mesa • Muñeca con desviación cubital' },
+            abdomen_ap_supino:           { pose: 'supine', focus: 0.4,  label: 'Decúbito supino • AP (KUB)' },
+            pelvis_ap:                   { pose: 'supine', focus: 0.5,  label: 'Decúbito supino • AP, pies rotados 15°–20° internamente' },
+            pelvis_taylor_outlet:        { pose: 'supine', focus: 0.5,  label: 'Decúbito supino • AP axial de salida' },
+            cadera_ap_unilateral:        { pose: 'supine', focus: 0.53, label: 'Decúbito supino • AP unilateral' },
+            cadera_lauenstein:           { pose: 'supine', focus: 0.53, label: 'Decúbito supino • Muslo en abducción (rana)' },
+            rodilla_ap:                  { pose: 'supine', focus: 0.72, label: 'Decúbito supino • AP (según distancia EIAS–mesa)' },
+            rodilla_lateral:             { pose: 'supine', focus: 0.72, label: 'Decúbito lateral • Rodilla flexionada 20°–30°' },
+            pierna_ap_lat:               { pose: 'supine', focus: 0.83, label: 'Decúbito supino • AP y lateral' },
+            tobillo_mortaja:             { pose: 'supine', focus: 0.94, label: 'Supino / sentado • AP y mortaja (rotación interna 15°–20°)' },
+            pie_ap_axial:                { pose: 'supine', focus: 0.96, label: 'Supino • Planta apoyada sobre el RI (rodilla flexionada)' },
+            calcaneo_axial:              { pose: 'supine', focus: 0.97, label: 'Supino • Pie en dorsiflexión (planta perpendicular al RI)' }
+        };
+
+        function getPoseInfo(proj, regionKey) {
+            const p = PROJECTION_POSES[proj.id] || {};
+            return {
+                pose: p.pose || 'supine',
+                focus: p.focus !== undefined ? p.focus : (REGION_FOCUS[regionKey] !== undefined ? REGION_FOCUS[regionKey] : 0.4),
+                label: p.label || ''
+            };
+        }
+
+        // Vector unitario del haz. Supino/mesa: haz vertical hacia abajo, cefálico (proximal) = hacia la izquierda.
+        // Erecto: haz horizontal hacia el Bucky (derecha), cefálico = hacia arriba.
+        function beamVector(pose, deg, dir) {
+            const t = (dir === 'perpendicular' ? 0 : (deg || 0)) * Math.PI / 180;
+            if (pose === 'erect') {
+                return { x: Math.cos(t), y: (dir === 'cefalico' ? -1 : 1) * Math.sin(t) };
+            }
+            return { x: (dir === 'cefalico' ? -1 : 1) * Math.sin(t), y: Math.cos(t) };
+        }
+
+        function buildPoseScene(pose, focus, showGrid, irKnown) {
+            const g = [];
+            const body = 'fill: var(--dg-body); stroke: var(--dg-body-stroke); stroke-width: 1.2';
+            const table = 'fill: var(--dg-table)';
+            const ir = 'fill: var(--dg-ir)';
+            const txt = 'fill: var(--dg-muted); font: 600 9px JetBrains Mono, monospace';
+            let target, hi, R, irLabel;
+
+            if (pose === 'erect') {
+                const fy = 35 + focus * 215;
+                // Bucky mural / receptor
+                g.push(`<line x1="356" y1="10" x2="356" y2="262" style="stroke: var(--dg-table); stroke-width: 3"/>`);
+                if (showGrid) {
+                    g.push(`<rect x="328" y="${fy - 70}" width="18" height="140" rx="2" style="${ir}; opacity: 0.25"/>`);
+                    for (let y = fy - 66; y <= fy + 66; y += 5) g.push(`<line x1="330" y1="${y}" x2="344" y2="${y}" style="stroke: var(--dg-ir); stroke-width: 1"/>`);
+                    g.push(`<rect x="344" y="${fy - 70}" width="4" height="140" style="${ir}"/>`);
+                    target = { x: 344, y: fy };
+                    irLabel = 'Bucky mural + RI';
+                } else {
+                    g.push(`<rect x="327" y="${fy - 60}" width="5" height="120" style="${ir}"/>`);
+                    target = { x: 329, y: fy };
+                    irLabel = irKnown ? 'RI directo (sin rejilla)' : 'Receptor de imagen';
+                }
+                const ly = Math.max(70, Math.min(200, fy));
+                g.push(`<text x="368" y="${ly}" text-anchor="middle" transform="rotate(90 368 ${ly})" style="${txt}">${irLabel}</text>`);
+                // Paciente de pie, de perfil frente al receptor
+                g.push(`<circle cx="300" cy="44" r="15" style="${body}"/>`);
+                g.push(`<rect x="294" y="58" width="12" height="10" style="${body}"/>`);
+                g.push(`<rect x="281" y="66" width="42" height="88" rx="14" style="${body}"/>`);
+                g.push(`<rect x="283" y="148" width="38" height="30" rx="10" style="${body}"/>`);
+                g.push(`<rect x="288" y="174" width="28" height="70" rx="10" style="${body}"/>`);
+                g.push(`<rect x="290" y="240" width="32" height="9" rx="4" style="${body}"/>`);
+                g.push(`<line x1="250" y1="252" x2="365" y2="252" style="stroke: var(--dg-table); stroke-width: 2"/>`);
+                hi = { x: 302, y: fy, rx: 24, ry: 15 };
+                R = 230;
+                g.push(`<text x="20" y="22" style="${txt}">▲ CEFÁLICO</text>`);
+                g.push(`<text x="20" y="250" style="${txt}">▼ CAUDAL</text>`);
+            } else if (pose === 'table') {
+                const fx = 110 + focus * 250;
+                // Mesa y receptor sobre la mesa
+                g.push(`<rect x="90" y="194" width="300" height="8" rx="2" style="${table}"/>`);
+                g.push(`<line x1="110" y1="202" x2="110" y2="258" style="stroke: var(--dg-table); stroke-width: 4"/>`);
+                g.push(`<line x1="370" y1="202" x2="370" y2="258" style="stroke: var(--dg-table); stroke-width: 4"/>`);
+                if (showGrid) {
+                    g.push(`<rect x="${fx - 55}" y="186" width="110" height="8" style="${ir}; opacity: 0.3"/>`);
+                    for (let x = fx - 52; x <= fx + 52; x += 5) g.push(`<line x1="${x}" y1="186" x2="${x}" y2="194" style="stroke: var(--dg-ir); stroke-width: 1"/>`);
+                    irLabel = 'Rejilla + RI';
+                } else {
+                    g.push(`<rect x="${fx - 55}" y="189" width="110" height="5" style="${ir}"/>`);
+                    irLabel = irKnown ? 'RI directo sobre la mesa' : 'Receptor de imagen';
+                }
+                target = { x: fx, y: 191 };
+                g.push(`<text x="${fx}" y="216" text-anchor="middle" style="${txt}">${irLabel}</text>`);
+                // Paciente sentado con la extremidad superior sobre la mesa
+                g.push(`<rect x="22" y="205" width="56" height="7" rx="2" style="${table}"/>`);
+                g.push(`<line x1="30" y1="212" x2="30" y2="258" style="stroke: var(--dg-table); stroke-width: 3"/>`);
+                g.push(`<line x1="72" y1="212" x2="72" y2="258" style="stroke: var(--dg-table); stroke-width: 3"/>`);
+                g.push(`<circle cx="48" cy="84" r="14" style="${body}"/>`);
+                g.push(`<rect x="28" y="100" width="40" height="105" rx="13" style="${body}"/>`);
+                g.push(`<path d="M60 112 L150 176 L150 188 L52 128 Z" style="${body}"/>`);
+                g.push(`<rect x="148" y="177" width="146" height="11" rx="5" style="${body}"/>`);
+                g.push(`<rect x="290" y="176" width="62" height="12" rx="5" style="${body}"/>`);
+                hi = { x: fx, y: 182, rx: 22, ry: 11 };
+                R = 160;
+                g.push(`<text x="96" y="248" style="${txt}">◄ PROXIMAL / CEFÁLICO</text>`);
+                g.push(`<text x="384" y="248" text-anchor="end" style="${txt}">DISTAL ►</text>`);
+            } else {
+                const fx = 45 + focus * 330;
+                // Mesa radiográfica
+                g.push(`<rect x="20" y="194" width="380" height="8" rx="2" style="${table}"/>`);
+                g.push(`<line x1="40" y1="216" x2="40" y2="258" style="stroke: var(--dg-table); stroke-width: 4"/>`);
+                g.push(`<line x1="380" y1="216" x2="380" y2="258" style="stroke: var(--dg-table); stroke-width: 4"/>`);
+                if (showGrid) {
+                    g.push(`<rect x="${fx - 62}" y="204" width="124" height="11" style="${ir}; opacity: 0.25"/>`);
+                    for (let x = fx - 58; x <= fx + 58; x += 5) g.push(`<line x1="${x}" y1="204" x2="${x}" y2="211" style="stroke: var(--dg-ir); stroke-width: 1"/>`);
+                    g.push(`<rect x="${fx - 62}" y="211" width="124" height="4" style="${ir}"/>`);
+                    target = { x: fx, y: 211 };
+                    irLabel = 'Bucky de mesa + RI';
+                } else {
+                    g.push(`<rect x="${fx - 55}" y="189" width="110" height="5" style="${ir}"/>`);
+                    target = { x: fx, y: 191 };
+                    irLabel = irKnown ? 'RI directo (sin rejilla)' : 'Receptor de imagen';
+                }
+                g.push(`<text x="${fx}" y="228" text-anchor="middle" style="${txt}">${irLabel}</text>`);
+                // Paciente en decúbito, cabeza a la izquierda
+                g.push(`<circle cx="58" cy="172" r="15" style="${body}"/>`);
+                g.push(`<rect x="71" y="167" width="12" height="11" style="${body}"/>`);
+                g.push(`<rect x="80" y="152" width="150" height="37" rx="14" style="${body}"/>`);
+                g.push(`<rect x="222" y="157" width="40" height="32" rx="10" style="${body}"/>`);
+                g.push(`<rect x="256" y="166" width="66" height="22" rx="10" style="${body}"/>`);
+                g.push(`<rect x="318" y="170" width="54" height="17" rx="8" style="${body}"/>`);
+                g.push(`<rect x="368" y="150" width="11" height="37" rx="4" style="${body}"/>`);
+                hi = { x: fx, y: 172, rx: 22, ry: 15 };
+                R = 160;
+                g.push(`<text x="22" y="248" style="${txt}">◄ CEFÁLICO (cabeza)</text>`);
+                g.push(`<text x="398" y="248" text-anchor="end" style="${txt}">CAUDAL (pies) ►</text>`);
+            }
+
+            g.push(`<ellipse cx="${hi.x}" cy="${hi.y}" rx="${hi.rx}" ry="${hi.ry}" style="fill: var(--dg-hi); fill-opacity: 0.35; stroke: var(--dg-hi); stroke-width: 1.5"/>`);
+            return { parts: g, target, R };
+        }
+
+        function buildBeam(pose, target, R, deg, dir, color, opts) {
+            const d = beamVector(pose, deg, dir);
+            const tube = { x: target.x - R * d.x, y: target.y - R * d.y };
+            const start = { x: tube.x + 22 * d.x, y: tube.y + 22 * d.y };
+            const n = { x: -d.y, y: d.x };
+            const rot = Math.atan2(d.y, d.x) * 180 / Math.PI - 90;
+            const out = [];
+            const dash = opts.dashed ? 'stroke-dasharray: 6 4;' : '';
+
+            if (opts.cone) {
+                out.push(`<polygon points="${start.x + n.x * 7},${start.y + n.y * 7} ${start.x - n.x * 7},${start.y - n.y * 7} ${target.x - n.x * 48},${target.y - n.y * 48} ${target.x + n.x * 48},${target.y + n.y * 48}" style="fill: ${color}; fill-opacity: 0.08"/>`);
+            }
+            // Tubo de rayos X (carcasa + colimador), orientado según el haz
+            out.push(`<g transform="translate(${tube.x} ${tube.y}) rotate(${rot})">
+                <rect x="-30" y="-17" width="60" height="25" rx="11" style="fill: ${opts.ghost ? 'none' : 'var(--dg-tube)'}; stroke: ${color}; stroke-width: 1.5; ${dash}"/>
+                <rect x="-12" y="8" width="24" height="12" rx="2" style="fill: ${opts.ghost ? 'none' : 'var(--dg-tube)'}; stroke: ${color}; stroke-width: 1.2; ${dash}"/>
+            </g>`);
+            out.push(`<line x1="${start.x}" y1="${start.y}" x2="${target.x}" y2="${target.y}" style="stroke: ${color}; stroke-width: 2.2; ${dash}" marker-end="url(#${opts.markerId})"/>`);
+
+            // Referencia perpendicular y valor del ángulo
+            if (opts.showAngle && deg > 0 && dir !== 'perpendicular') {
+                const p0 = beamVector(pose, 0, 'perpendicular');
+                const len = R * 0.62;
+                out.push(`<line x1="${target.x}" y1="${target.y}" x2="${target.x - p0.x * len}" y2="${target.y - p0.y * len}" style="stroke: var(--dg-muted); stroke-width: 1; stroke-dasharray: 3 3"/>`);
+                const bis = { x: d.x + p0.x, y: d.y + p0.y };
+                const bl = Math.hypot(bis.x, bis.y) || 1;
+                const lp = { x: target.x - (bis.x / bl) * 78, y: target.y - (bis.y / bl) * 78 };
+                out.push(`<text x="${lp.x}" y="${lp.y}" text-anchor="middle" style="fill: ${color}; font: 700 11px JetBrains Mono, monospace">${deg}°</text>`);
+            }
+            if (opts.label) {
+                out.push(`<text x="${tube.x + n.x * 42}" y="${tube.y + n.y * 42 + 4}" text-anchor="middle" style="fill: ${color}; font: 700 10px JetBrains Mono, monospace">${opts.label}</text>`);
+            }
+            if (opts.dfpLabel) {
+                // Etiqueta al lado opuesto de la referencia perpendicular para no chocar con el valor del ángulo
+                const p0 = beamVector(pose, 0, 'perpendicular');
+                const side = (n.x * (p0.x - d.x) + n.y * (p0.y - d.y)) > 0 ? -1 : 1;
+                const mid = { x: (start.x + target.x) / 2 + side * n.x * 18, y: (start.y + target.y) / 2 + side * n.y * 18 };
+                out.push(`<text x="${mid.x}" y="${mid.y}" text-anchor="middle" style="fill: var(--dg-ink); font: 600 9.5px JetBrains Mono, monospace">${opts.dfpLabel}</text>`);
+            }
+            return { svg: out.join(''), tube };
+        }
+
+        // mode: 'answer' (RC correcto) | 'hidden' (Modo Práctica antes de disparar) | 'compare' (Paso 4: correcto vs estudiante)
+        function renderPositioningDiagram(proj, regionKey, rec, mode, user) {
+            const info = getPoseInfo(proj, regionKey);
+            const uid = `dg${Math.random().toString(36).slice(2, 8)}`;
+            const scene = buildPoseScene(info.pose, info.focus, mode === 'hidden' ? false : rec.bucky, mode !== 'hidden');
+            const beams = [];
+            const tubes = [];
+
+            if (mode === 'hidden') {
+                const b = buildBeam(info.pose, scene.target, scene.R, 0, 'perpendicular', 'var(--dg-muted)', { dashed: true, ghost: true, markerId: `${uid}m`, label: 'RC: ¿°?' });
+                beams.push(b.svg); tubes.push(b.tube);
+            } else {
+                const b = buildBeam(info.pose, scene.target, scene.R, rec.angleDeg, rec.angleDir, 'var(--dg-cr)', {
+                    cone: true, showAngle: true, markerId: `${uid}c`,
+                    label: mode === 'compare' ? 'Correcto' : 'RC',
+                    dfpLabel: `DFP ${rec.dfpCm} cm`
+                });
+                beams.push(b.svg); tubes.push(b.tube);
+                if (mode === 'compare' && user) {
+                    const same = user.angleDeg === rec.angleDeg && user.angleDir === rec.angleDir;
+                    const u = buildBeam(info.pose, scene.target, scene.R * 0.9, user.angleDeg, user.angleDir, 'var(--dg-user)', {
+                        dashed: true, ghost: true, showAngle: !same, markerId: `${uid}u`, label: same ? '' : 'Tu RC'
+                    });
+                    beams.push(u.svg); tubes.push(u.tube);
+                }
+            }
+
+            // ViewBox dinámico para que el tubo angulado nunca quede fuera del esquema
+            let minX = 0, minY = 0, maxX = 420, maxY = 266;
+            tubes.forEach(t => {
+                minX = Math.min(minX, t.x - 60); maxX = Math.max(maxX, t.x + 60);
+                minY = Math.min(minY, t.y - 40); maxY = Math.max(maxY, t.y + 40);
+            });
+            const w = maxX - minX, h = maxY - minY;
+            const markers = ['c', 'u', 'm'].map((k, i) => {
+                const col = ['var(--dg-cr)', 'var(--dg-user)', 'var(--dg-muted)'][i];
+                return `<marker id="${uid}${k}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: ${col}"/></marker>`;
+            }).join('');
+
+            return `<svg viewBox="${minX} ${minY} ${w} ${h}" class="w-full h-auto block" role="img" aria-label="Esquema de posicionamiento: ${proj.name}">
+                <defs>${markers}</defs>
+                <rect x="${minX}" y="${minY}" width="${w}" height="${h}" style="fill: var(--dg-bg)"/>
+                ${scene.parts.join('')}
+                ${beams.join('')}
+            </svg>`;
+        }
+
+        // =================================================================================
+        // SELECTOR DE TEMA CLARO / OSCURO
+        // =================================================================================
+        function toggleTheme() {
+            const dark = !document.documentElement.classList.contains('dark');
+            document.documentElement.classList.toggle('dark', dark);
+            try { localStorage.setItem('radsim-theme', dark ? 'dark' : 'light'); } catch (e) {}
+            syncThemeButton();
+        }
+
+        function syncThemeButton() {
+            const dark = document.documentElement.classList.contains('dark');
+            document.getElementById('themeIconSun').classList.toggle('hidden', !dark);
+            document.getElementById('themeIconMoon').classList.toggle('hidden', dark);
+            document.getElementById('themeToggleLabel').textContent = dark ? 'Modo Claro' : 'Modo Oscuro';
+        }
+
         const state = {
             currentStep: 1, // 1 | 2 | 3 | 4
-            mode: 'study', // 'study' | 'quiz'
+            mode: 'quiz', // 'quiz' (Práctica / Evaluación, por defecto) | 'study' (Docente / Estudio)
             regionKey: 'torax',
             projectionId: 'torax_pa',
             patientCategory: 'adulto', // 'adulto' | 'pediatrico'
@@ -1864,14 +2351,18 @@
 
         // INICIALIZACIÓN
         window.addEventListener('DOMContentLoaded', () => {
+            syncThemeButton();
             renderRegionPills();
             populateAgeRanges();
             selectRegion('torax');
+            setAppMode('quiz'); // Pestaña 1: Modo Práctica / Evaluación como inicio por defecto
             goToStep(1);
         });
 
         // NAVEGACIÓN ENTRE LOS 4 PASOS
         function goToStep(stepNumber) {
+            // El Paso 4 (Disparo y Evaluación) es exclusivo del Modo Práctica
+            if (stepNumber === 4 && state.mode === 'study') stepNumber = 3;
             state.currentStep = stepNumber;
             for (let i = 1; i <= 4; i++) {
                 const panel = document.getElementById(`stepPanel${i}`);
@@ -1886,10 +2377,15 @@
                     btn.querySelector('span').className = 'w-6 h-6 rounded-lg bg-slate-800 text-slate-300 font-mono font-bold text-xs flex items-center justify-center shrink-0';
                 }
             }
+            const step4Btn = document.getElementById('stepBtn4');
+            step4Btn.disabled = state.mode === 'study';
+            step4Btn.classList.toggle('opacity-40', state.mode === 'study');
+            step4Btn.classList.toggle('cursor-not-allowed', state.mode === 'study');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function exposeAndGoToStep4() {
+            if (state.mode === 'study') return; // Sin disparo en Modo Docente
             evaluateExposureAndRenderStep4();
             goToStep(4);
         }
@@ -2222,6 +2718,19 @@
                 posList.appendChild(li);
             });
 
+            // Esquema de posicionamiento del Paso 1 (en Práctica no revela angulación ni Bucky)
+            const poseInfo = getPoseInfo(proj, state.regionKey);
+            document.getElementById('step1DiagramPoseLabel').textContent = poseInfo.label;
+            document.getElementById('step1PositioningDiagram').innerHTML =
+                renderPositioningDiagram(proj, state.regionKey, rec, state.mode === 'study' ? 'answer' : 'hidden');
+            document.getElementById('step1DiagramCaption').innerHTML = state.mode === 'study'
+                ? `<span style="color: var(--dg-cr)" class="font-bold">━ RC ${formatRecAngle(rec)}</span> • DFP ${rec.dfpCm} cm • ${rec.bucky ? 'Con Bucky' : 'Sin Bucky'} • <span style="color: var(--dg-hi)" class="font-bold">●</span> estructura de interés`
+                : `<span class="font-bold text-amber-300">Modo Práctica:</span> el esquema muestra la posición del paciente y la estructura (<span style="color: var(--dg-hi)">●</span>). La angulación del RC, la DFP y el uso de Bucky los decides tú en el Paso 3; en el Paso 4 verás el RC correcto comparado con el tuyo.`;
+
+            if (state.mode === 'study') {
+                renderTeacherSheet(proj, region, ageObj, habitusObj, poseInfo);
+            }
+
             // Paso 2: Etiqueta de espesor
             document.getElementById('estimatedThicknessLabel').textContent = `Espesor AP/PA estimado: ~${rec.estimatedCm} cm`;
 
@@ -2231,14 +2740,16 @@
             document.getElementById('displayMas').textContent = cur.mas >= 10 ? cur.mas.toFixed(1) : cur.mas.toFixed(2);
             document.getElementById('displayMa').textContent = cur.ma;
             document.getElementById('maStationSelect').value = String(cur.ma);
-            document.getElementById('displaySeconds').textContent = cur.seconds.toFixed(3);
+            document.getElementById('displaySeconds').textContent = formatSeconds(cur.seconds);
             document.getElementById('millisecondsHint').textContent = `Equivale a: ${(cur.seconds * 1000).toFixed(1)} ms`;
-            document.getElementById('masFormulaHint').textContent = `${cur.ma} mA × ${cur.seconds.toFixed(3)} s = ${cur.mas.toFixed(2)} mAs`;
-
-            const secIdx = TIME_STATIONS_SEC.findIndex(t => Math.abs(t - cur.seconds) < 0.0005);
-            if (secIdx !== -1) {
-                document.getElementById('masSliderControl').value = secIdx;
+            document.getElementById('masFormulaHint').textContent = `${cur.ma} mA × ${formatSeconds(cur.seconds)} s = ${cur.mas.toFixed(2)} mAs`;
+            const masExactInput = document.getElementById('masExactInput');
+            if (document.activeElement !== masExactInput) {
+                masExactInput.value = cur.mas;
             }
+
+            // El slider se ubica en la estación de tiempo más cercana (el mAs exacto puede quedar entre estaciones)
+            document.getElementById('masSliderControl').value = TIME_STATIONS_SEC.indexOf(snapToNearestTimeStation(cur.seconds));
 
             if (state.mode === 'study') {
                 document.getElementById('kvpRangeHint').textContent = `Ideal ACR/ESUR: ${rec.kvp - 4} - ${rec.kvp + 4} kVp`;
@@ -2285,6 +2796,47 @@
             }
         }
 
+        // FICHA TÉCNICA DEL MODO DOCENTE (lee los valores óptimos ya calculados en state.recommended)
+        function renderTeacherSheet(proj, region, ageObj, habitusObj, poseInfo) {
+            const rec = state.recommended;
+            const focal = rec.ma <= 100 ? 'Foco fino 0.6 mm' : 'Foco grueso 1.2 mm';
+            const tiles = [
+                { label: 'kV (Tensión)', value: `${rec.kvp} kVp`, sub: `Rango aceptable ${rec.kvp - 4}–${rec.kvp + 4} kVp`, color: 'text-cyan-400', border: 'border-cyan-500/40' },
+                { label: 'mAs (Cantidad)', value: `${rec.mas} mAs`, sub: `${rec.ma} mA × ${formatSeconds(rec.seconds)} s`, color: 'text-amber-400', border: 'border-amber-500/40' },
+                { label: 'mA (Corriente)', value: `${rec.ma} mA`, sub: focal, color: 'text-emerald-400', border: 'border-emerald-500/40' },
+                { label: 'Tiempo (s)', value: `${formatSeconds(rec.seconds)} s`, sub: `${(rec.seconds * 1000).toFixed(1)} ms`, color: 'text-purple-300', border: 'border-purple-500/40' },
+                { label: 'DFP / SID', value: `${rec.dfpCm} cm`, sub: proj.dfp, color: 'text-cyan-400', border: 'border-slate-800' },
+                { label: 'Angulación RC', value: formatRecAngle(rec), sub: proj.angle, color: 'text-amber-400', border: 'border-slate-800' },
+                { label: 'Rejilla (Bucky)', value: rec.bucky ? 'CON Bucky' : 'SIN Bucky', sub: rec.buckyRemovedForPediatric ? 'Retirado por protocolo pediátrico' : (rec.bucky ? 'Espesor > 10–12 cm' : 'Espesor < 10–12 cm'), color: 'text-emerald-400', border: 'border-slate-800' },
+                { label: 'Espesor estimado', value: `~${rec.estimatedCm} cm`, sub: `${state.weightKg} kg • ${habitusObj.label}`, color: 'text-slate-200', border: 'border-slate-800' }
+            ];
+            document.getElementById('teacherParamsGrid').innerHTML = tiles.map(t => `
+                <div class="bg-slate-950/90 border ${t.border} rounded-xl p-3">
+                    <div class="text-[10px] font-mono uppercase text-slate-400">${t.label}</div>
+                    <div class="text-lg font-mono font-extrabold ${t.color} leading-tight mt-1">${t.value}</div>
+                    <div class="text-[11px] text-slate-400 mt-1">${t.sub}</div>
+                </div>`).join('');
+
+            document.getElementById('teacherDiagramPoseLabel').textContent = poseInfo.label;
+            document.getElementById('teacherPositioningDiagram').innerHTML = renderPositioningDiagram(proj, state.regionKey, rec, 'answer');
+
+            const list = document.getElementById('teacherPositioningList');
+            list.innerHTML = '';
+            proj.positioning.forEach(step => {
+                const li = document.createElement('li');
+                li.textContent = step;
+                list.appendChild(li);
+            });
+            document.getElementById('teacherCrCenter').textContent = proj.crCenter;
+            document.getElementById('teacherIrSize').textContent = proj.irSize;
+            document.getElementById('teacherRespiration').textContent = proj.respiration;
+            document.getElementById('teacherAgeNote').textContent = ageObj.note;
+            document.getElementById('teacherBuckyNote').textContent = rec.buckyRemovedForPediatric
+                ? `Paciente pediátrico de ${state.weightKg} kg: se retira el Bucky (Image Gently / ESUR) y se reducen kVp y mAs para evitar dosis innecesaria.`
+                : '';
+            document.getElementById('teacherTips').textContent = proj.tips;
+        }
+
         // CONTROLES MANUALES DE CONSOLA (ELÉCTRICOS Y GEOMÉTRICOS)
         function adjustManualKvp(delta) {
             state.current.kvp = Math.max(40, Math.min(135, state.current.kvp + delta));
@@ -2325,9 +2877,22 @@
             refreshConsoleDisplayOnly();
         }
 
+        // Edición precisa del mAs: mantiene el mA elegido y despeja s = mAs / mA (mAs = mA × s)
+        function setManualMasExact(val) {
+            const target = parseFloat(String(val).replace(',', '.'));
+            if (!isFinite(target) || target <= 0) {
+                refreshConsoleDisplayOnly();
+                return;
+            }
+            const mas = Math.max(0.1, Math.min(800, target));
+            const seconds = Math.max(0.001, Math.min(2.0, mas / state.current.ma));
+            state.current.seconds = Math.round(seconds * 10000) / 10000;
+            state.current.mas = Math.round(state.current.ma * state.current.seconds * 100) / 100;
+            refreshConsoleDisplayOnly();
+        }
+
         function stepExposureTime(direction) {
-            const currentIdx = TIME_STATIONS_SEC.findIndex(t => Math.abs(t - state.current.seconds) < 0.0005);
-            const idx = currentIdx === -1 ? 6 : currentIdx;
+            const idx = TIME_STATIONS_SEC.indexOf(snapToNearestTimeStation(state.current.seconds));
             const nextIdx = Math.max(0, Math.min(TIME_STATIONS_SEC.length - 1, idx + direction));
             state.current.seconds = TIME_STATIONS_SEC[nextIdx];
             state.current.mas = Math.round(state.current.ma * state.current.seconds * 100) / 100;
@@ -2400,20 +2965,28 @@
             const quizNotice = document.getElementById('quizConsoleNotice');
             const btnRestore = document.getElementById('btnRestoreRecommended');
 
-            if (mode === 'study') {
-                btnStudy.className = 'px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-semibold transition-all flex items-center gap-1.5';
-                btnQuiz.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5';
-                quizNotice.classList.add('hidden');
-                btnRestore.classList.remove('hidden');
-                recalculateRadiographicFactors(true);
-            } else {
-                btnQuiz.className = 'px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-semibold transition-all flex items-center gap-1.5';
-                btnStudy.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5';
-                quizNotice.classList.remove('hidden');
-                btnRestore.classList.add('hidden');
-                recalculateRadiographicFactors(true);
-            }
+            const isStudy = mode === 'study';
+            const inactiveTab = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5';
+            btnStudy.className = isStudy ? 'px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-semibold transition-all flex items-center gap-1.5' : inactiveTab;
+            btnQuiz.className = isStudy ? inactiveTab : 'px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-semibold transition-all flex items-center gap-1.5';
+            btnStudy.setAttribute('aria-selected', String(isStudy));
+            btnQuiz.setAttribute('aria-selected', String(!isStudy));
+
+            // Modo Práctica: consola editable + disparo. Modo Docente: ficha técnica de consulta, sin disparo.
+            quizNotice.classList.toggle('hidden', isStudy);
+            btnRestore.classList.add('hidden');
+            document.getElementById('practiceConsole').classList.toggle('hidden', isStudy);
+            document.getElementById('teacherSheet').classList.toggle('hidden', !isStudy);
+            document.getElementById('consoleHeaderTools').classList.toggle('hidden', isStudy);
+            document.getElementById('step3PanelKicker').textContent = isStudy
+                ? 'Paso 3 de 3 • Ficha Técnica Docente (ACR / ESUR • Bontrager 10ª Ed.)'
+                : 'Paso 3 de 4 • Generador de Alta Frecuencia & Geometría';
+            document.getElementById('step3Kicker').textContent = isStudy ? 'Paso 3 • Ficha' : 'Paso 3';
+            document.getElementById('step4Title').textContent = isStudy ? 'Solo en Modo Práctica' : 'Disparo y Evaluación';
+
+            recalculateRadiographicFactors(true);
             renderProjectionsList();
+            goToStep(state.currentStep === 4 && isStudy ? 3 : state.currentStep);
         }
 
         // =================================================================================
@@ -2477,7 +3050,7 @@
                 diagnostics.push({
                     param: '2. Cantidad de Radiación (mAs = mA × s)',
                     status: 'ok',
-                    userVal: `${cur.mas} mAs (${cur.ma} mA × ${cur.seconds.toFixed(3)} s) • DI: ${deviationIndex > 0 ? '+' : ''}${deviationIndex}`,
+                    userVal: `${cur.mas} mAs (${cur.ma} mA × ${formatSeconds(cur.seconds)} s) • DI: ${deviationIndex > 0 ? '+' : ''}${deviationIndex}`,
                     idealVal: `${rec.mas} mAs (${rec.ma} mA × ${rec.seconds.toFixed(3)} s)`,
                     effect: 'Índice de Desviación (DI) dentro del rango diagnóstico [-1.5 a +1.5] de la AAPM/ACR. Excelente relación Señal-Ruido (SNR) sin moteado cuántico.'
                 });
@@ -2486,7 +3059,7 @@
                 diagnostics.push({
                     param: '2. Cantidad de Radiación (mAs = mA × s)',
                     status: 'error',
-                    userVal: `${cur.mas} mAs (${cur.ma} mA × ${cur.seconds.toFixed(3)} s) • DI: ${deviationIndex}`,
+                    userVal: `${cur.mas} mAs (${cur.ma} mA × ${formatSeconds(cur.seconds)} s) • DI: ${deviationIndex}`,
                     idealVal: `${rec.mas} mAs (${rec.ma} mA × ${rec.seconds.toFixed(3)} s)`,
                     effect: 'Efecto en la Imagen: SUBEXPOSICIÓN DIGITAL (MOTEADO CUÁNTICO). Aunque el post-procesado digital intente igualar el brillo, el número insuficiente de fotones en el detector produce una imagen granulada (baja relación Señal-Ruido) que oculta trazos de fractura finos.'
                 });
@@ -2495,23 +3068,80 @@
                 diagnostics.push({
                     param: '2. Cantidad de Radiación (mAs = mA × s)',
                     status: 'error',
-                    userVal: `${cur.mas} mAs (${cur.ma} mA × ${cur.seconds.toFixed(3)} s) • DI: +${deviationIndex}`,
+                    userVal: `${cur.mas} mAs (${cur.ma} mA × ${formatSeconds(cur.seconds)} s) • DI: +${deviationIndex}`,
                     idealVal: `${rec.mas} mAs (${rec.ma} mA × ${rec.seconds.toFixed(3)} s)`,
                     effect: 'Efecto en la Imagen: SOBREEXPOSICIÓN DIGITAL ("DOSE CREEP") Y SATURACIÓN. Se irradia innecesariamente al paciente violando el principio ALARA; si el DI supera +3.0 aparece saturación ("burn-out") perdiendo los bordes de partes blandas y corticales.'
                 });
             }
 
-            // 3. EVALUACIÓN DE ANGULACIÓN Y DIRECCIÓN DEL RAYO CENTRAL (RC)
+            // 3. EVALUACIÓN DE LA CORRIENTE DEL TUBO (mA) POR SEPARADO
+            const maRatio = cur.ma / rec.ma;
+            const curFocal = cur.ma <= 100 ? 'foco fino 0.6 mm' : 'foco grueso 1.2 mm';
+            const recFocal = rec.ma <= 100 ? 'foco fino 0.6 mm' : 'foco grueso 1.2 mm';
+            if (maRatio >= 0.625 && maRatio <= 1.6) {
+                diagnostics.push({
+                    param: '3. Corriente del Tubo (mA)',
+                    status: 'ok',
+                    userVal: `${cur.ma} mA (${curFocal})`,
+                    idealVal: `${rec.ma} mA (${recFocal})`,
+                    effect: cur.ma === rec.ma
+                        ? 'Corriente adecuada: permite un tiempo de exposición corto con la mancha focal apropiada para esta estructura.'
+                        : 'Corriente aceptable: por Ley de Reciprocidad (mAs = mA × s) la diferencia se compensa con el tiempo sin afectar la imagen.'
+                });
+            } else if (maRatio < 0.625) {
+                errorCount++;
+                diagnostics.push({
+                    param: '3. Corriente del Tubo (mA)',
+                    status: 'error',
+                    userVal: `${cur.ma} mA (Bajo • ${curFocal})`,
+                    idealVal: `${rec.ma} mA (${recFocal})`,
+                    effect: `Efecto en la Imagen: Con ${cur.ma} mA, para alcanzar el mAs necesario el tiempo debe alargarse ~${(1 / maRatio).toFixed(1)} veces, lo que aumenta el RIESGO DE BORROSIDAD CINÉTICA (respiración, latido cardíaco, temblor o llanto en pediatría). Usa ${rec.ma} mA para acortar el tiempo de exposición.`
+                });
+            } else {
+                errorCount++;
+                diagnostics.push({
+                    param: '3. Corriente del Tubo (mA)',
+                    status: 'error',
+                    userVal: `${cur.ma} mA (Alto • ${curFocal})`,
+                    idealVal: `${rec.ma} mA (${recFocal})`,
+                    effect: rec.ma <= 100 && cur.ma > 100
+                        ? `Efecto en la Imagen: PÉRDIDA DE RESOLUCIÓN ESPACIAL (PENUMBRA GEOMÉTRICA). Sobre ${rec.ma} mA el generador cambia a foco grueso (1.2 mm), aumentando la penumbra y borrando el detalle trabecular fino que esta estructura requiere.`
+                        : `Efecto en la Imagen y Equipo: Con ${cur.ma} mA se fuerza el foco grueso y la carga térmica del ánodo sin beneficio clínico; aumenta la penumbra geométrica y el tiempo resultante (${formatSeconds(cur.seconds)} s) queda fuera de las estaciones habituales.`
+                });
+            }
+
+            // 4. EVALUACIÓN DEL TIEMPO DE EXPOSICIÓN (s) POR SEPARADO (borrosidad cinética)
+            const motionSensitive = state.patientCategory === 'pediatrico' || state.regionKey === 'torax' || state.regionKey === 'abdomen_pelvis';
+            const timeLimitAbs = motionSensitive ? 0.02 : 0.05;
+            const timeTooLong = cur.seconds > rec.seconds * 1.5 && cur.seconds > timeLimitAbs;
+            if (!timeTooLong) {
+                diagnostics.push({
+                    param: '4. Tiempo de Exposición (s)',
+                    status: 'ok',
+                    userVal: `${formatSeconds(cur.seconds)} s (${(cur.seconds * 1000).toFixed(1)} ms)`,
+                    idealVal: `${formatSeconds(rec.seconds)} s (${(rec.seconds * 1000).toFixed(1)} ms)`,
+                    effect: 'Tiempo suficientemente corto para congelar el movimiento voluntario e involuntario: sin borrosidad cinética.'
+                });
+            } else {
+                errorCount++;
+                diagnostics.push({
+                    param: '4. Tiempo de Exposición (s)',
+                    status: 'error',
+                    userVal: `${formatSeconds(cur.seconds)} s (Largo • ${(cur.seconds * 1000).toFixed(0)} ms)`,
+                    idealVal: `${formatSeconds(rec.seconds)} s (${(rec.seconds * 1000).toFixed(1)} ms)`,
+                    effect: `Efecto en la Imagen: BORROSIDAD CINÉTICA (DESENFOQUE POR MOVIMIENTO). Un tiempo de ${(cur.seconds * 1000).toFixed(0)} ms ${motionSensitive ? 'en tórax/abdomen o en un paciente pediátrico no congela el latido cardíaco, el peristaltismo ni los movimientos del niño' : 'aumenta la probabilidad de movimiento del paciente'}: bordes corticales dobles o difusos y pérdida de nitidez. Corrige subiendo el mA y bajando el tiempo manteniendo el mAs.`
+                });
+            }
+
+            // 5. EVALUACIÓN DE ANGULACIÓN Y DIRECCIÓN DEL RAYO CENTRAL (RC)
             const dirMatches = (rec.angleDegMin === 0 && cur.angleDeg === 0) || (cur.angleDir === rec.angleDir);
             const degMatches = cur.angleDeg >= (rec.angleDegMin - 2) && cur.angleDeg <= (rec.angleDegMax + 2);
-            const recAngleStr = rec.angleDeg === 0 && rec.angleDegMax === 0
-                ? '0° Perpendicular'
-                : `${rec.angleDegMin === rec.angleDegMax ? rec.angleDegRec + '°' : rec.angleDegMin + '° a ' + rec.angleDegMax + '°'} ${rec.angleDir === 'caudal' ? 'Caudal' : (rec.angleDir === 'cefalico' ? 'Cefálico' : 'Perpendicular')}`;
-            const userAngleStr = cur.angleDeg === 0 ? '0° Perpendicular' : `${cur.angleDeg}° ${cur.angleDir === 'caudal' ? 'Caudal' : 'Cefálico'}`;
+            const recAngleStr = formatRecAngle(rec);
+            const userAngleStr = formatAngle(cur.angleDeg, cur.angleDir);
 
             if (dirMatches && degMatches) {
                 diagnostics.push({
-                    param: '3. Angulación del Rayo Central (RC)',
+                    param: '5. Angulación del Rayo Central (RC)',
                     status: 'ok',
                     userVal: userAngleStr,
                     idealVal: recAngleStr,
@@ -2531,7 +3161,7 @@
                 }
 
                 diagnostics.push({
-                    param: '3. Angulación del Rayo Central (RC)',
+                    param: '5. Angulación del Rayo Central (RC)',
                     status: 'error',
                     userVal: userAngleStr,
                     idealVal: recAngleStr,
@@ -2539,10 +3169,10 @@
                 });
             }
 
-            // 4. EVALUACIÓN DE DISTANCIA FOCO-PELÍCULA (DFP / SID)
+            // 6. EVALUACIÓN DE DISTANCIA FOCO-PELÍCULA (DFP / SID)
             if (cur.dfpCm === rec.dfpCm) {
                 diagnostics.push({
-                    param: '4. Distancia Foco-Película (DFP / SID)',
+                    param: '6. Distancia Foco-Película (DFP / SID)',
                     status: 'ok',
                     userVal: `${cur.dfpCm} cm`,
                     idealVal: `${rec.dfpCm} cm`,
@@ -2554,7 +3184,7 @@
                     ? `Efecto en la Imagen: AUMENTO DE MAGNIFICACIÓN Y BORROSIDAD GEOMÉTRICA. En ${proj.name} usar ${cur.dfpCm} cm en lugar de ${rec.dfpCm} cm produce cardiomegalia aparente o magnificación ósea y aumenta la dosis en piel.`
                     : `Efecto en la Imagen: SUBEXPOSICIÓN POR LEY DEL INVERSO DEL CUADRADO. Aumentar la DFP a ${cur.dfpCm} cm sin compensar el mAs reduce drásticamente los fotones que llegan al detector.`;
                 diagnostics.push({
-                    param: '4. Distancia Foco-Película (DFP / SID)',
+                    param: '6. Distancia Foco-Película (DFP / SID)',
                     status: 'error',
                     userVal: `${cur.dfpCm} cm`,
                     idealVal: `${rec.dfpCm} cm`,
@@ -2562,10 +3192,10 @@
                 });
             }
 
-            // 5. EVALUACIÓN DE REJILLA ANTIDIFUSORA BUCKY
+            // 7. EVALUACIÓN DE REJILLA ANTIDIFUSORA BUCKY
             if (cur.bucky === rec.bucky) {
                 diagnostics.push({
-                    param: '5. Parrilla Antidifusora (Bucky)',
+                    param: '7. Parrilla Antidifusora (Bucky)',
                     status: 'ok',
                     userVal: cur.bucky ? 'CON Bucky' : 'SIN Bucky',
                     idealVal: rec.bucky ? 'CON Bucky' : 'SIN Bucky',
@@ -2579,7 +3209,7 @@
                     ? `Efecto en la Imagen y Paciente: DOSIS INNECESARIA Y SUBEXPOSICIÓN. Para esta estructura (~${rec.estimatedCm} cm) la guía ACR/ESUR contraindica el Bucky porque el pequeño espesor genera poca radiación dispersa y la rejilla obliga a triplicar el mAs.`
                     : `Efecto en la Imagen: PÉRDIDA SEVERA DE CONTRASTE POR RADIACIÓN DISPERSA. Al tener un espesor de ~${rec.estimatedCm} cm (>10-12 cm), omitir la rejilla Bucky permite que los fotones dispersos por efecto Compton golpeen el detector creando velo y borrando el detalle trabecular.`;
                 diagnostics.push({
-                    param: '5. Parrilla Antidifusora (Bucky)',
+                    param: '7. Parrilla Antidifusora (Bucky)',
                     status: 'error',
                     userVal: cur.bucky ? 'CON Bucky' : 'SIN Bucky',
                     idealVal: rec.bucky ? 'CON Bucky' : 'SIN Bucky',
@@ -2595,7 +3225,7 @@
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xl flex items-center justify-center">✓</div>
                         <div>
-                            <h3 class="text-base font-bold text-emerald-300">¡TÉCNICA RADIOLÓGICA ÓPTIMA! (5/5 Parámetros Correctos)</h3>
+                            <h3 class="text-base font-bold text-emerald-300">¡TÉCNICA RADIOLÓGICA ÓPTIMA! (${diagnostics.length}/${diagnostics.length} Parámetros Correctos)</h3>
                             <p class="text-xs text-slate-300">Cumple con el posicionamiento de Bontrager 10ª Ed. y los niveles de referencia diagnósticos ACR / ESUR Digital.</p>
                         </div>
                     </div>
@@ -2669,7 +3299,8 @@
             // Distorsión geométrica si la angulación o DFP es incorrecta
             const scaleY = (!dirMatches || !degMatches) ? 1.18 : 1.0;
             const scaleMag = cur.dfpCm < rec.dfpCm ? 1.14 : 1.0;
-            anatomyGraphic.style.filter = `brightness(${brightness}) contrast(${contrast})`;
+            const motionBlurPx = timeTooLong ? Math.min(3, 0.8 + Math.log2(cur.seconds / Math.max(rec.seconds, 0.001))) : 0;
+            anatomyGraphic.style.filter = `brightness(${brightness}) contrast(${contrast})${motionBlurPx > 0 ? ` blur(${motionBlurPx.toFixed(1)}px)` : ''}`;
             anatomyGraphic.style.transform = `scale(${scaleMag}, ${scaleY * scaleMag})`;
 
             // Dosis ESD en mGy
@@ -2691,6 +3322,10 @@
             document.getElementById('physicsJustificationText').textContent =
                 `Para un paciente ${catLabel} (${ageObj.label}) de ${state.weightKg} kg con biotipo ${habitusObj.label} (espesor estimado ~${rec.estimatedCm} cm), las guías ACR/ESUR para sistemas digitales DR recomiendan ${rec.kvp} kVp y ${rec.mas} mAs (${rec.ma} mA × ${rec.seconds.toFixed(3)} s) a una DFP de ${rec.dfpCm} cm y Rayo Central a ${recAngleStr}.`;
             document.getElementById('detailClinicalTips').textContent = `Nota Clínica Bontrager: ${proj.tips}`;
+
+            // Esquema geométrico: RC correcto (cian) vs RC del estudiante (rojo discontinuo)
+            document.getElementById('evalPositioningDiagram').innerHTML =
+                renderPositioningDiagram(proj, state.regionKey, rec, 'compare', { angleDeg: cur.angleDeg, angleDir: cur.angleDir });
         }
     </script>
 </body>
