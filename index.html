@@ -5595,9 +5595,9 @@
         }
 
         // Recordatorios flotantes: según la pantalla y el contenido que se está viendo, discretos
-        const DYK_DWELL_MS = 3000, DYK_COOLDOWN_MS = 45000, DYK_VISIBLE_MS = 12000;
+        const DYK_DWELL_MS = 3000, DYK_INTERVAL_MS = 60000, DYK_VISIBLE_MS = 12000;
         const DYK_PREF_KEY = 'rxsim.dyk.auto';
-        const dyk = { timer: null, dwell: null, lastAuto: 0, shownCtx: new Set(), seen: new Set(), ctxKey: '', levels: [], auto: true, idDone: new Set(), pregDone: new Set() };
+        const dyk = { timer: null, dwell: null, lastAuto: 0, seen: new Set(), ctxKey: '', levels: [], auto: true, idDone: new Set(), pregDone: new Set() };
         try { dyk.auto = localStorage.getItem(DYK_PREF_KEY) !== '0'; } catch (e) { /* sin almacenamiento */ }
         const XRAY_ICON = '<svg class="w-6 h-6" viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="3" width="22" height="26" rx="3" stroke-opacity="0.85"/><path d="M16 7v18M11.5 10.5c2.5 1 6.5 1 9 0M11 14.5c2.8 1 7.2 1 10 0M11.5 18.5c2.5 1 6.5 1 9 0M13 22.5c1.8.7 4.2.7 6 0"/><circle cx="25" cy="7" r="3.2" fill="#FDE047" stroke="none"/></svg>';
 
@@ -5670,7 +5670,7 @@
             return !$('modalAddPatient').classList.contains('hidden') || !$('lightbox').classList.contains('hidden');
         }
 
-        // Se llama cada vez que cambia lo que se está viendo; el tip aparece solo si el usuario se queda ~3 s
+        // Se llama cada vez que cambia lo que se está viendo: actualiza el contexto (los tips salen cada minuto, ver dykTick)
         function refreshTipContext() {
             const levels = currentTipLevels().filter(l => l.length);
             // El paciente activo forma parte del contexto: dos pacientes con la misma proyección son contextos distintos
@@ -5689,16 +5689,18 @@
                 }, DYK_DWELL_MS);
                 return;
             }
-            if (dyk.shownCtx.has(key)) return;
-            dyk.dwell = setTimeout(() => {
-                if (dyk.ctxKey !== key || tipBlocked() || Date.now() - dyk.lastAuto < DYK_COOLDOWN_MS) return;
-                const t = pickTip(levels, false);
-                if (!t) return;
-                dyk.shownCtx.add(key);
-                dyk.lastAuto = Date.now();
-                renderTip(t);
-            }, DYK_DWELL_MS);
         }
+
+        // Recordatorio automático periódico: uno por minuto, del contexto que se está viendo en ese momento
+        function dykTick() {
+            if (!dyk.auto || document.hidden || tipBlocked() || $('dykStack').querySelector('.dyk')) return;
+            const levels = dyk.levels.length ? dyk.levels : currentTipLevels().filter(l => l.length);
+            const t = pickTip(levels, false) || pickTip(levels, true);
+            if (!t) return;
+            dyk.lastAuto = Date.now();
+            renderTip(t);
+        }
+        setInterval(dykTick, DYK_INTERVAL_MS);
 
         // Botón de la barra superior: recordatorio inmediato del contexto actual (sin esperar ni respetar el intervalo mínimo)
         function requestTip() {
